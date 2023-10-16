@@ -34,7 +34,13 @@ export const Link = styled(RouteLink, {
   font-size: 36px;
   text-decoration: none;
 
-  ${(props) => props.isActive && linkUnderline}
+  ${({ isActive }) =>
+    isActive &&
+    css`
+      &::after {
+        ${linkUnderline}
+      }
+    `}
 
   &:hover::after {
     ${linkUnderline}
