@@ -3,13 +3,20 @@ import { getProductsQuery } from "../../apis/products/queries";
 
 const Products = () => {
   const { data } = useQuery({
-    ...getProductsQuery({ page: 1 }),
+    ...getProductsQuery({
+      page: 1,
+      pageSize: 5,
+      sort: {
+        field: "score",
+        order: "desc",
+      },
+    }),
   });
 
   return (
     <div>
       <ul>
-        {data?.map((product) => (
+        {data?.products.map((product) => (
           <li key={product.item_no}>{product.item_name}</li>
         ))}
       </ul>

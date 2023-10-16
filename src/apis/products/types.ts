@@ -6,3 +6,5 @@ export interface Product {
   score: number;
   availableCoupon?: boolean;
 }
+
+export type AvailableProductSortField = Extract<keyof Product, "score">;
