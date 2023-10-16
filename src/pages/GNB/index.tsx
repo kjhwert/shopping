@@ -1,18 +1,19 @@
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import * as S from "./styles";
 
 const GNB = () => {
   return (
-    <nav>
-      <ul>
+    <S.NavigationBar>
+      <S.NavList>
         <li>
-          <Link to="/products">상품</Link>
+          <S.NavLink to="/products">상품</S.NavLink>
         </li>
         <li>
-          <Link to="/cart">장바구니</Link>
+          <S.NavLink to="/cart">장바구니</S.NavLink>
         </li>
-      </ul>
+      </S.NavList>
       <Outlet />
-    </nav>
+    </S.NavigationBar>
   );
 };
 
