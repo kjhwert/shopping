@@ -1,5 +1,8 @@
+import { RouterProvider } from "react-router-dom";
+import appRouter from "./pages";
+
 const App = () => {
-  return <div>29cm 과제</div>;
+  return <RouterProvider router={appRouter} />;
 };
 
 export default App;
