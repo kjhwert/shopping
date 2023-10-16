@@ -1,9 +1,7 @@
 import { getProducts } from "./index";
-import { RequiredQueryOptions } from "../../configs/queryClient/types";
+import { ApiQuery } from "../ApiQuery";
 
-export const getProductsQuery = (
-  ...params: Parameters<typeof getProducts>
-): RequiredQueryOptions<typeof getProducts> => {
+export const getProductsQuery: ApiQuery<typeof getProducts> = (...params) => {
   return {
     queryFn: () => getProducts(...params),
     queryKey: ["products", ...params],
