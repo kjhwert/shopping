@@ -1,6 +1,6 @@
 import { Product } from "./types";
 
-const products: Product[] = [
+const mockProducts: Product[] = [
   {
     item_no: 122997,
     item_name: "스탠리 클래식 런치박스",
@@ -103,4 +103,4 @@ const products: Product[] = [
   },
 ];
 
-export default products;
+export default mockProducts;
