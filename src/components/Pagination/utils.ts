@@ -3,30 +3,31 @@ interface CreatePageListProps {
   page: number;
 }
 
+const createArray = (length: number, callback: (index: number) => number) => {
+  return Array.from({ length }, (_, i) => callback(i));
+};
+
 const createPageList = ({ page, totalPage }: CreatePageListProps) => {
   if (totalPage < 11) {
     return {
       centerLeftPage: 1,
       centerRightPage: totalPage,
-      pageList: [...Array.from({ length: totalPage }, (_, i) => i + 1)],
+      pageList: createArray(totalPage, (i) => i + 1),
     };
   }
-
-  const pageList = new Array(10);
-  pageList[9] = totalPage;
 
   const isPageWithinLeft = 1 <= page && page <= 6;
   const isPageWithinRight = totalPage - 4 <= page && page <= totalPage;
 
   const centerPagesLength = isPageWithinLeft || isPageWithinRight ? 8 : 6;
 
-  const pages = Array.from({ length: centerPagesLength }).map((_, i) => {
+  const pages = createArray(centerPagesLength, (i) => {
     if (isPageWithinLeft) {
       return i + 1;
     }
 
     if (isPageWithinRight) {
-      return totalPage - 7 + i;
+      return i + totalPage - 7;
     }
 
     return i + page - 3;
