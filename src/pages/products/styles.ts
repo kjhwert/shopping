@@ -54,3 +54,9 @@ export const Score = styled.span`
   color: #5d5d5d;
   font-size: 11px;
 `;
+
+export const PaginationWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
