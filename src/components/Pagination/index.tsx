@@ -1,6 +1,6 @@
 import * as S from "./styles";
 import IconArrow from "../../assets/icons/IconArrow";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import createPageList from "./utils";
 
 interface PaginationProps {
@@ -14,10 +14,14 @@ const Pagination = (props: PaginationProps) => {
 
   const [currentPage, setCurrentPage] = useState(page);
 
-  const { pageList, centerLeftPage, centerRightPage } = createPageList({
-    page: currentPage,
-    totalPage,
-  });
+  const { pageList, centerLeftPage, centerRightPage } = useMemo(
+    () =>
+      createPageList({
+        page: currentPage,
+        totalPage,
+      }),
+    [currentPage, totalPage],
+  );
 
   const handlePageChange = useCallback(
     (page: number) => {
