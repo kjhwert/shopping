@@ -26,8 +26,8 @@ describe("<Pagination />", () => {
     it("페이지 점프 기능은 제공하지 않는다.", () => {
       render(<Pagination page={1} totalPage={10} onChange={fn} />);
 
-      expect(screen.queryByRole("prev-jump")).not.toBeInTheDocument();
-      expect(screen.queryByRole("next-jump")).not.toBeInTheDocument();
+      expect(screen.queryByRole("prev-ellipsis")).not.toBeInTheDocument();
+      expect(screen.queryByRole("next-ellipsis")).not.toBeInTheDocument();
     });
   });
 
@@ -45,7 +45,7 @@ describe("<Pagination />", () => {
         expect(screen.getByText("7")).toBeInTheDocument();
         expect(screen.getByText("8")).toBeInTheDocument();
 
-        expect(screen.queryByRole("prev-jump")).not.toBeInTheDocument();
+        expect(screen.queryByRole("prev-ellipsis")).not.toBeInTheDocument();
       });
     });
 
@@ -56,7 +56,7 @@ describe("<Pagination />", () => {
         expect(screen.queryByText("2")).not.toBeInTheDocument();
         expect(screen.queryByText("3")).not.toBeInTheDocument();
 
-        expect(screen.getByRole("prev-jump")).toBeInTheDocument();
+        expect(screen.getByRole("prev-ellipsis")).toBeInTheDocument();
       });
     });
 
@@ -67,7 +67,7 @@ describe("<Pagination />", () => {
         expect(screen.queryByText("18")).not.toBeInTheDocument();
         expect(screen.queryByText("19")).not.toBeInTheDocument();
 
-        expect(screen.getByRole("next-jump")).toBeInTheDocument();
+        expect(screen.getByRole("next-ellipsis")).toBeInTheDocument();
       });
     });
 
@@ -78,7 +78,7 @@ describe("<Pagination />", () => {
         expect(screen.getByText("18")).toBeInTheDocument();
         expect(screen.getByText("19")).toBeInTheDocument();
 
-        expect(screen.queryByRole("next-jump")).not.toBeInTheDocument();
+        expect(screen.queryByRole("next-ellipsis")).not.toBeInTheDocument();
       });
     });
   });
@@ -101,10 +101,10 @@ describe("<Pagination />", () => {
       fireEvent.click(screen.getByRole("next-page"));
       expect(fn).toHaveBeenCalledWith(10);
 
-      fireEvent.click(screen.getByRole("prev-jump"));
+      fireEvent.click(screen.getByRole("prev-ellipsis"));
       expect(fn).toHaveBeenCalledWith(6);
 
-      fireEvent.click(screen.getByRole("next-jump"));
+      fireEvent.click(screen.getByRole("next-ellipsis"));
       expect(fn).toHaveBeenCalledWith(9);
 
       fireEvent.click(screen.getByText("20"));
@@ -150,36 +150,36 @@ describe("<Pagination />", () => {
     });
   });
 
-  describe("LeftJump 클릭시", () => {
+  describe("Leftellipsis 클릭시", () => {
     it("중략된 페이지로 이동", () => {
       render(<Pagination page={20} totalPage={40} onChange={fn} />);
 
-      fireEvent.click(screen.getByRole("prev-jump"));
+      fireEvent.click(screen.getByRole("prev-ellipsis"));
 
       expect(screen.getByText("16")).toHaveClass("active");
 
-      fireEvent.click(screen.getByRole("prev-jump"));
+      fireEvent.click(screen.getByRole("prev-ellipsis"));
 
       expect(screen.getByText("12")).toHaveClass("active");
 
-      fireEvent.click(screen.getByRole("prev-jump"));
+      fireEvent.click(screen.getByRole("prev-ellipsis"));
 
       expect(screen.getByText("8")).toHaveClass("active");
     });
   });
-  describe("RightJump", () => {
+  describe("Rightellipsis", () => {
     it("중략된 페이지로 이동", () => {
       render(<Pagination page={20} totalPage={40} onChange={fn} />);
 
-      fireEvent.click(screen.getByRole("next-jump"));
+      fireEvent.click(screen.getByRole("next-ellipsis"));
 
       expect(screen.getByText("23")).toHaveClass("active");
 
-      fireEvent.click(screen.getByRole("next-jump"));
+      fireEvent.click(screen.getByRole("next-ellipsis"));
 
       expect(screen.getByText("26")).toHaveClass("active");
 
-      fireEvent.click(screen.getByRole("next-jump"));
+      fireEvent.click(screen.getByRole("next-ellipsis"));
 
       expect(screen.getByText("29")).toHaveClass("active");
     });

@@ -64,8 +64,8 @@ const Pagination = (props: PaginationProps) => {
             role={
               typeof page === "string"
                 ? index === 1
-                  ? "prev-jump"
-                  : "next-jump"
+                  ? "prev-ellipsis"
+                  : "next-ellipsis"
                 : undefined
             }
             onClick={() => handlePageClick(page, index)}
