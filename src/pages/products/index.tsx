@@ -4,8 +4,12 @@ import * as S from "./styles";
 import IconScore from "../../assets/icons/IconScore";
 import Pagination from "../../components/Pagination";
 import { useCallback, useState } from "react";
+import IconShoppingBag from "../../assets/icons/IconShoppingBag";
+import useCart from "../../stores/cart";
 
 const Products = () => {
+  const { onChangeCart } = useCart();
+
   const [page, setPage] = useState(1);
 
   const { data } = useQuery({
@@ -35,6 +39,9 @@ const Products = () => {
       <S.List>
         {products.map((product) => (
           <S.Product key={product.item_no}>
+            <S.ShoppingBagWrapper onClick={() => onChangeCart(product)}>
+              <IconShoppingBag />
+            </S.ShoppingBagWrapper>
             <S.Image src={product.detail_image_url} alt="상품 이미지" />
             <S.Info>
               <S.Name>{product.item_name}</S.Name>

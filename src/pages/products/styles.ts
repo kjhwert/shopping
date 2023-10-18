@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import IconShoppingBag from "../../assets/icons/IconShoppingBag";
 
 export const List = styled.ul`
   display: flex;
@@ -11,6 +12,8 @@ export const List = styled.ul`
 `;
 
 export const Product = styled.li`
+  position: relative;
+
   @media screen and (max-width: 1920px) {
     width: 19%;
   }
@@ -59,4 +62,18 @@ export const PaginationWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+`;
+
+export const ShoppingBagWrapper = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #fff;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 `;
