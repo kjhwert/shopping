@@ -13,8 +13,8 @@ const createArray = (length: number, callback: (index: number) => number) => {
 const createPageList = ({ page, totalPage }: CreatePageListProps) => {
   if (totalPage < 11) {
     return {
-      centerLeftPage: 1,
-      centerRightPage: totalPage,
+      leftEllipsisPage: 1,
+      rightEllipsisPage: totalPage,
       pageList: createArray(totalPage, (i) => i + 1),
     };
   }
@@ -42,12 +42,12 @@ const createPageList = ({ page, totalPage }: CreatePageListProps) => {
   const leftSide = isLeftSideEllipsis ? [1, "..."] : [];
   const rightSide = isRightSideEllipsis ? ["...", totalPage] : [];
 
-  const centerLeftPage = pages[0];
-  const centerRightPage = pages[pages.length - 1];
+  const leftEllipsisPage = pages[0] - 1;
+  const rightEllipsisPage = pages[pages.length - 1] + 1;
 
   return {
-    centerLeftPage,
-    centerRightPage,
+    leftEllipsisPage,
+    rightEllipsisPage,
     pageList: [...leftSide, ...pages, ...rightSide],
   };
 };

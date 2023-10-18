@@ -14,7 +14,7 @@ const Pagination = (props: PaginationProps) => {
 
   const [currentPage, setCurrentPage] = useState(page);
 
-  const { pageList, centerLeftPage, centerRightPage } = useMemo(
+  const { pageList, leftEllipsisPage, rightEllipsisPage } = useMemo(
     () =>
       createPageList({
         page: currentPage,
@@ -35,16 +35,16 @@ const Pagination = (props: PaginationProps) => {
     (page: number | string, index: number) => {
       if (typeof page === "string") {
         if (index === 1) {
-          handlePageChange(centerLeftPage - 1);
+          handlePageChange(leftEllipsisPage);
         } else {
-          handlePageChange(centerRightPage + 1);
+          handlePageChange(rightEllipsisPage);
         }
         return;
       }
 
       handlePageChange(page);
     },
-    [centerLeftPage, centerRightPage, handlePageChange],
+    [leftEllipsisPage, rightEllipsisPage, handlePageChange],
   );
 
   return (
