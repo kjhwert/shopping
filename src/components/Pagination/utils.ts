@@ -3,6 +3,9 @@ interface CreatePageListProps {
   page: number;
 }
 
+const PAGE_COUNT_ELLIPSIS_ONCE = 8;
+const PAGE_COUNT_ELLIPSIS_TWICE = 6;
+
 const createArray = (length: number, callback: (index: number) => number) => {
   return Array.from({ length }, (_, i) => callback(i));
 };
@@ -16,25 +19,28 @@ const createPageList = ({ page, totalPage }: CreatePageListProps) => {
     };
   }
 
-  const isPageWithinLeft = 1 <= page && page <= 6;
-  const isPageWithinRight = totalPage - 4 <= page && page <= totalPage;
+  const isLeftSideEllipsis = 7 <= page;
+  const isRightSideEllipsis = page < totalPage - 4;
 
-  const centerPagesLength = isPageWithinLeft || isPageWithinRight ? 8 : 6;
+  const centerPagesLength =
+    isLeftSideEllipsis && isRightSideEllipsis
+      ? PAGE_COUNT_ELLIPSIS_TWICE
+      : PAGE_COUNT_ELLIPSIS_ONCE;
 
   const pages = createArray(centerPagesLength, (i) => {
-    if (isPageWithinLeft) {
+    if (!isLeftSideEllipsis) {
       return i + 1;
     }
 
-    if (isPageWithinRight) {
+    if (!isRightSideEllipsis) {
       return i + totalPage - 7;
     }
 
     return i + page - 3;
   });
 
-  const leftSide = isPageWithinLeft ? [] : [1, "..."];
-  const rightSide = isPageWithinRight ? [] : ["...", totalPage];
+  const leftSide = isLeftSideEllipsis ? [1, "..."] : [];
+  const rightSide = isRightSideEllipsis ? ["...", totalPage] : [];
 
   const centerLeftPage = pages[0];
   const centerRightPage = pages[pages.length - 1];
