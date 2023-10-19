@@ -66,17 +66,20 @@ const Cart = () => {
             </tr>
           </thead>
           <tbody>
-            {carts.map((product, index) => (
-              <tr key={product.item_no}>
+            {carts.map((cartItem, index) => (
+              <tr key={cartItem.item_no}>
                 <td>
                   <S.BodyColumn>
-                    <input type="checkbox" />
+                    <input type="checkbox" checked={cartItem.checked} />
                   </S.BodyColumn>
                 </td>
                 <td>
                   <S.BodyColumnProduct>
-                    <S.Image src={product.detail_image_url} alt="상품 이미지" />
-                    <div>{product.item_name}</div>
+                    <S.Image
+                      src={cartItem.detail_image_url}
+                      alt="상품 이미지"
+                    />
+                    <div>{cartItem.item_name}</div>
                     <button onClick={() => onRemoveItem(index)}>remove</button>
                   </S.BodyColumnProduct>
                 </td>
@@ -84,7 +87,7 @@ const Cart = () => {
                   <S.BodyColumn>
                     <input
                       type="number"
-                      value={product.count}
+                      value={cartItem.count}
                       min={1}
                       onChange={(e) =>
                         onUpdateItem(index, { count: Number(e.target.value) })
@@ -94,7 +97,7 @@ const Cart = () => {
                 </td>
                 <td>
                   <S.BodyColumnPrice>
-                    {(product.discountPrice * product.count).toLocaleString()}
+                    {(cartItem.discountPrice * cartItem.count).toLocaleString()}
                   </S.BodyColumnPrice>
                 </td>
               </tr>
