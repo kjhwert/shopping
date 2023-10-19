@@ -35,7 +35,7 @@ const Products = () => {
   const { products, meta } = data;
 
   return (
-    <div>
+    <S.Layout>
       <S.List>
         {products.map((product) => (
           <S.Product key={product.item_no}>
@@ -45,7 +45,7 @@ const Products = () => {
             <S.Image src={product.detail_image_url} alt="상품 이미지" />
             <S.Info>
               <S.Name>{product.item_name}</S.Name>
-              <S.Price>{product.price}</S.Price>
+              <S.Price>{product.price.toLocaleString()}</S.Price>
               <S.ScoreWrapper>
                 <IconScore />
                 <S.Score>{product.score}</S.Score>
@@ -61,7 +61,7 @@ const Products = () => {
           onChange={handlePageChange}
         />
       </S.PaginationWrapper>
-    </div>
+    </S.Layout>
   );
 };
 

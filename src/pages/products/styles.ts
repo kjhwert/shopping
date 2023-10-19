@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
-import IconShoppingBag from "../../assets/icons/IconShoppingBag";
+
+export const Layout = styled.main``;
 
 export const List = styled.ul`
   display: flex;
