@@ -8,7 +8,25 @@ const Cart = () => {
     ...getCouponsQuery(),
   });
 
-  const { carts, totalPrice, onRemoveItem, onUpdateItem } = useCart();
+  const {
+    carts,
+    totalPrice,
+    onRemoveItem,
+    onUpdateItem,
+    onUpdateItemsByDiscountRate,
+    onDiscountByAmount,
+  } = useCart();
+
+  const handleSelectCoupon = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const coupon = e.target.value;
+
+    const [type, discount] = coupon.split("-");
+    if (type === "rate") {
+      onUpdateItemsByDiscountRate(Number(discount));
+    } else {
+      onDiscountByAmount(Number(discount));
+    }
+  };
 
   return (
     <S.Layout>
@@ -50,10 +68,7 @@ const Cart = () => {
               </td>
               <td>
                 <S.BodyColumnPrice>
-                  <span>{product.price.toLocaleString()}</span>
-                  <span>
-                    {(product.discountPrice * product.count).toLocaleString()}
-                  </span>
+                  {(product.discountPrice * product.count).toLocaleString()}
                 </S.BodyColumnPrice>
               </td>
             </tr>
@@ -62,12 +77,20 @@ const Cart = () => {
       </S.Table>
       <S.Section>
         <h1>쿠폰</h1>
-        <select>
-          {coupons?.map((coupon) => (
-            <option key={`coupon-option-${coupon.title}`}>
-              {coupon.title}
-            </option>
-          ))}
+        <select onChange={handleSelectCoupon}>
+          {coupons?.map((coupon) => {
+            const optionValue = `${coupon.type}-${
+              coupon.type === "rate"
+                ? coupon.discountRate
+                : coupon.discountAmount
+            }`;
+
+            return (
+              <option key={`coupon-option-${coupon.title}`} value={optionValue}>
+                {coupon.title}
+              </option>
+            );
+          })}
         </select>
       </S.Section>
       <S.Section>

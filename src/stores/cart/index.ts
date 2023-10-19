@@ -1,5 +1,5 @@
 import useCartStore, { Cart } from "./useCartStore";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Product } from "../../apis/products/types";
 
 const useCart = () => {
@@ -8,11 +8,13 @@ const useCart = () => {
   const removeItem = useCartStore((state) => state.removeItem);
   const updateItem = useCartStore((state) => state.updateItem);
 
-  const totalPrice = useMemo(
+  const cartsTotalPrice = useMemo(
     () =>
       carts.reduce((prev, next) => prev + next.count * next.discountPrice, 0),
     [carts],
   );
+
+  const [totalPrice, setTotalPrice] = useState(cartsTotalPrice);
 
   const isCartFull = useMemo(() => carts.length >= 3, [carts]);
 
@@ -53,6 +55,28 @@ const useCart = () => {
     [updateItem],
   );
 
+  const handleUpdateItemsByDiscountRate = useCallback(
+    (discountRate: number) => {
+      carts.forEach((cart, index) => {
+        if (cart.availableCoupon === false) {
+          return;
+        }
+
+        const discountPrice = cart.discountPrice * ((100 - discountRate) / 100);
+        handleUpdateItem(index, { discountPrice });
+      });
+    },
+    [carts, handleUpdateItem],
+  );
+
+  const handleDiscountByAmount = useCallback((discount: number) => {
+    setTotalPrice((prev) => prev - discount);
+  }, []);
+
+  useEffect(() => {
+    setTotalPrice(Math.floor(cartsTotalPrice));
+  }, [cartsTotalPrice]);
+
   return {
     carts,
     totalPrice,
@@ -60,6 +84,8 @@ const useCart = () => {
     onAddItem: handleAddItem,
     onUpdateItem: handleUpdateItem,
     onCreateOrDeleteItem: handleCreateOrDeleteItem,
+    onUpdateItemsByDiscountRate: handleUpdateItemsByDiscountRate,
+    onDiscountByAmount: handleDiscountByAmount,
   };
 };
 
