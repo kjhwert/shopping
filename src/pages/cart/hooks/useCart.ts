@@ -55,10 +55,9 @@ const useCart = () => {
   );
 
   const handleTotalPriceChange = useCallback(() => {
-    const totalPrice = carts.reduce(
-      (prev, next) => prev + next.discountPrice * next.count,
-      0,
-    );
+    const totalPrice = carts
+      .filter((cart) => cart.checked)
+      .reduce((prev, next) => prev + next.discountPrice * next.count, 0);
 
     updateTotalPrice(Math.floor(totalPrice));
   }, [carts, updateTotalPrice]);

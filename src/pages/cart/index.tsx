@@ -2,6 +2,7 @@ import useCart from "./hooks/useCart";
 import * as S from "./styles";
 import useCoupon from "./hooks/useCoupon";
 import { useNavigate } from "react-router-dom";
+import { useCallback } from "react";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -70,7 +71,13 @@ const Cart = () => {
               <tr key={cartItem.item_no}>
                 <td>
                   <S.BodyColumn>
-                    <input type="checkbox" checked={cartItem.checked} />
+                    <input
+                      type="checkbox"
+                      checked={cartItem.checked}
+                      onChange={(e) =>
+                        onUpdateItem(index, { checked: e.target.checked })
+                      }
+                    />
                   </S.BodyColumn>
                 </td>
                 <td>
