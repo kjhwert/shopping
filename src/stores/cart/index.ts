@@ -1,49 +1,65 @@
-import useCartStore from "./useCartStore";
+import useCartStore, { Cart } from "./useCartStore";
 import { useCallback, useMemo } from "react";
 import { Product } from "../../apis/products/types";
 
 const useCart = () => {
   const carts = useCartStore((state) => state.carts);
-  const addCart = useCartStore((state) => state.addCart);
-  const removeCart = useCartStore((state) => state.removeCart);
+  const addItem = useCartStore((state) => state.addItem);
+  const removeItem = useCartStore((state) => state.removeItem);
+  const updateItem = useCartStore((state) => state.updateItem);
 
-  const isCartFull = useMemo(() => Object.keys(carts).length >= 3, [carts]);
+  const totalPrice = useMemo(
+    () =>
+      carts.reduce((prev, next) => prev + next.count * next.discountPrice, 0),
+    [carts],
+  );
 
-  const handleAddCart = useCallback(
+  const isCartFull = useMemo(() => carts.length >= 3, [carts]);
+
+  const handleAddItem = useCallback(
     (product: Product) => {
       if (isCartFull) {
         alert("장바구니는 최대 3개까지 담을 수 있습니다.");
         return;
       }
 
-      addCart(product);
+      addItem(product);
     },
-    [addCart, isCartFull],
+    [addItem, isCartFull],
   );
 
-  const handleRemoveCart = useCallback(
-    (item_no: number) => {
-      removeCart(item_no);
+  const handleRemoveItem = useCallback(
+    (index: number) => {
+      removeItem(index);
     },
-    [removeCart],
+    [removeItem],
   );
 
-  const handleChangeCart = useCallback(
+  const handleCreateOrDeleteItem = useCallback(
     (product: Product) => {
       if (carts[product.item_no]) {
-        handleRemoveCart(product.item_no);
+        handleRemoveItem(product.item_no);
       } else {
-        handleAddCart(product);
+        handleAddItem(product);
       }
     },
-    [carts, handleAddCart, handleRemoveCart],
+    [carts, handleAddItem, handleRemoveItem],
   );
 
-  const cartsAsArray = Object.values(carts);
+  const handleUpdateItem = useCallback(
+    (index: number, fields: Partial<Cart>) => {
+      updateItem(index, fields);
+    },
+    [updateItem],
+  );
 
   return {
-    cartsAsArray,
-    onChangeCart: handleChangeCart,
+    carts,
+    totalPrice,
+    onRemoveItem: handleRemoveItem,
+    onAddItem: handleAddItem,
+    onUpdateItem: handleUpdateItem,
+    onCreateOrDeleteItem: handleCreateOrDeleteItem,
   };
 };
 

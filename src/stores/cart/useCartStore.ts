@@ -2,26 +2,44 @@ import { create } from "zustand";
 import { Product } from "../../apis/products/types";
 import { immer } from "zustand/middleware/immer";
 
+export interface Cart extends Product {
+  count: number;
+  discountPrice: number;
+}
+
 type State = {
-  carts: Record<number, Product>;
+  carts: Cart[];
 };
 
 type Action = {
-  addCart: (product: Product) => void;
-  removeCart: (item_no: number) => void;
+  addItem: (product: Product) => void;
+  removeItem: (index: number) => void;
+  updateItem: (index: number, fields: Partial<Cart>) => void;
 };
 
 const useCartStore = create(
   immer<State & Action>((set) => ({
-    carts: {},
-    addCart: (product) => {
+    carts: [],
+    addItem: (product) => {
       set((state) => {
-        state.carts[product.item_no] = product;
+        state.carts.push({
+          ...product,
+          count: 1,
+          discountPrice: product.price,
+        });
       });
     },
-    removeCart: (item_no) => {
+    removeItem: (index) => {
       set((state) => {
-        delete state.carts[item_no];
+        state.carts.splice(index, 1);
+      });
+    },
+    updateItem: (index: number, fields: Partial<Cart>) => {
+      set((state) => {
+        state.carts[index] = {
+          ...state.carts[index],
+          ...fields,
+        };
       });
     },
   })),

@@ -8,7 +8,7 @@ const Cart = () => {
     ...getCouponsQuery(),
   });
 
-  const { cartsAsArray } = useCart();
+  const { carts, totalPrice, onRemoveItem, onUpdateItem } = useCart();
 
   return (
     <S.Layout>
@@ -22,7 +22,7 @@ const Cart = () => {
           </tr>
         </thead>
         <tbody>
-          {cartsAsArray.map((product, index) => (
+          {carts.map((product, index) => (
             <tr key={product.item_no}>
               <td>
                 <S.BodyColumn>
@@ -33,17 +33,27 @@ const Cart = () => {
                 <S.BodyColumnProduct>
                   <S.Image src={product.detail_image_url} alt="상품 이미지" />
                   <div>{product.item_name}</div>
-                  <button>remove</button>
+                  <button onClick={() => onRemoveItem(index)}>remove</button>
                 </S.BodyColumnProduct>
               </td>
               <td>
                 <S.BodyColumn>
-                  <input type="number" />
+                  <input
+                    type="number"
+                    value={product.count}
+                    min={1}
+                    onChange={(e) =>
+                      onUpdateItem(index, { count: Number(e.target.value) })
+                    }
+                  />
                 </S.BodyColumn>
               </td>
               <td>
                 <S.BodyColumnPrice>
                   <span>{product.price.toLocaleString()}</span>
+                  <span>
+                    {(product.discountPrice * product.count).toLocaleString()}
+                  </span>
                 </S.BodyColumnPrice>
               </td>
             </tr>
@@ -62,7 +72,7 @@ const Cart = () => {
       </S.Section>
       <S.Section>
         <h1>총 결제금액</h1>
-        <p>10000원</p>
+        <p>{totalPrice.toLocaleString()}</p>
       </S.Section>
     </S.Layout>
   );

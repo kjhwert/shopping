@@ -8,7 +8,7 @@ import IconShoppingBag from "../../assets/icons/IconShoppingBag";
 import useCart from "../../stores/cart";
 
 const Products = () => {
-  const { onChangeCart } = useCart();
+  const { onCreateOrDeleteItem } = useCart();
 
   const [page, setPage] = useState(1);
 
@@ -39,7 +39,7 @@ const Products = () => {
       <S.List>
         {products.map((product) => (
           <S.Product key={product.item_no}>
-            <S.ShoppingBagWrapper onClick={() => onChangeCart(product)}>
+            <S.ShoppingBagWrapper onClick={() => onCreateOrDeleteItem(product)}>
               <IconShoppingBag />
             </S.ShoppingBagWrapper>
             <S.Image src={product.detail_image_url} alt="상품 이미지" />
