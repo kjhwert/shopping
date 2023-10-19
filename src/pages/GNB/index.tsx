@@ -9,21 +9,23 @@ const GNB = () => {
   };
 
   return (
-    <S.NavigationBar>
-      <S.NavList>
-        <S.NavLink>
-          <S.Link to="/products" isActive={isActivePage("products")}>
-            상품
-          </S.Link>
-        </S.NavLink>
-        <S.NavLink>
-          <S.Link to="/cart" isActive={isActivePage("cart")}>
-            장바구니
-          </S.Link>
-        </S.NavLink>
-      </S.NavList>
+    <>
+      <S.NavigationBar>
+        <S.NavList>
+          <S.NavLink>
+            <S.Link to="/products" isActive={isActivePage("products")}>
+              상품
+            </S.Link>
+          </S.NavLink>
+          <S.NavLink>
+            <S.Link to="/cart" isActive={isActivePage("cart")}>
+              장바구니
+            </S.Link>
+          </S.NavLink>
+        </S.NavList>
+      </S.NavigationBar>
       <Outlet />
-    </S.NavigationBar>
+    </>
   );
 };
 
