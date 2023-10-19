@@ -2,7 +2,7 @@ import useCart from "./hooks/useCart";
 import * as S from "./styles";
 import useCoupon from "./hooks/useCoupon";
 import { useNavigate } from "react-router-dom";
-import { useCallback } from "react";
+import { useMemo } from "react";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -18,6 +18,14 @@ const Cart = () => {
     onDiscountByRate,
     onDiscountByAmount,
   } = useCart();
+
+  const haveItemsToAvailableCoupon = useMemo(
+    () =>
+      carts
+        .filter((cart) => cart.checked)
+        .some((cart) => cart.availableCoupon !== false),
+    [carts],
+  );
 
   const handleSelectCoupon = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const couponId = +e.target.value;
@@ -113,7 +121,11 @@ const Cart = () => {
         </S.Table>
         <S.Section>
           <h1>쿠폰</h1>
-          <select value={selectedCoupon?.id} onChange={handleSelectCoupon}>
+          <select
+            disabled={!haveItemsToAvailableCoupon}
+            value={selectedCoupon?.id}
+            onChange={handleSelectCoupon}
+          >
             <option value="-1">선택 안함</option>
             {availableCoupons.map((coupon) => (
               <option key={`coupon-option-${coupon.id}`} value={coupon.id}>
