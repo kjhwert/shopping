@@ -1,5 +1,5 @@
 import useCartStore, { Cart } from "../../../stores/cart/useCartStore";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { Product } from "../../../apis/products/types";
 
 const useCart = () => {
@@ -9,9 +9,10 @@ const useCart = () => {
     addItem,
     removeItem,
     updateItem,
-    discountClear,
+    discountUnselect,
     discountByRate,
     discountByAmount,
+    updateTotalPrice,
   } = useCartStore((state) => state);
 
   const isCartFull = useMemo(() => carts.length >= 3, [carts]);
@@ -53,9 +54,19 @@ const useCart = () => {
     [updateItem],
   );
 
-  const handleDiscountClear = useCallback(() => {
-    discountClear();
-  }, [discountClear]);
+  const handleTotalPriceChange = useCallback(() => {
+    const totalPrice = carts.reduce(
+      (prev, next) => prev + next.discountPrice * next.count,
+      0,
+    );
+
+    updateTotalPrice(totalPrice);
+  }, [carts, updateTotalPrice]);
+
+  const handleDiscountUnselect = useCallback(() => {
+    handleTotalPriceChange();
+    discountUnselect();
+  }, [handleTotalPriceChange, discountUnselect]);
 
   const handleDiscountByRate = useCallback(
     (discountRate: number) => {
@@ -66,11 +77,14 @@ const useCart = () => {
 
   const handleDiscountByAmount = useCallback(
     (discount: number) => {
-      handleDiscountClear();
       discountByAmount(discount);
     },
-    [handleDiscountClear, discountByAmount],
+    [discountByAmount],
   );
+
+  useEffect(() => {
+    handleTotalPriceChange();
+  }, [handleTotalPriceChange]);
 
   return {
     carts,
@@ -79,7 +93,7 @@ const useCart = () => {
     onAddItem: handleAddItem,
     onUpdateItem: handleUpdateItem,
     onCreateOrDeleteItem: handleCreateOrDeleteItem,
-    onDiscountClear: handleDiscountClear,
+    onDiscountUnselect: handleDiscountUnselect,
     onDiscountByRate: handleDiscountByRate,
     onDiscountByAmount: handleDiscountByAmount,
   };

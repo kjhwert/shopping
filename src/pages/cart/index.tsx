@@ -10,7 +10,7 @@ const Cart = () => {
     totalPrice,
     onRemoveItem,
     onUpdateItem,
-    onDiscountClear,
+    onDiscountUnselect,
     onDiscountByRate,
     onDiscountByAmount,
   } = useCart();
@@ -28,7 +28,7 @@ const Cart = () => {
         onDiscountByAmount(coupon.discountAmount);
       }
     } else {
-      onDiscountClear();
+      onDiscountUnselect();
     }
   };
 

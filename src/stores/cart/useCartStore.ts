@@ -16,7 +16,8 @@ type Action = {
   addItem: (product: Product) => void;
   removeItem: (index: number) => void;
   updateItem: (index: number, fields: Partial<Cart>) => void;
-  discountClear: () => void;
+  updateTotalPrice: (totalPrice: number) => void;
+  discountUnselect: () => void;
   discountByRate: (discountRate: number) => void;
   discountByAmount: (discountAmount: number) => void;
 };
@@ -25,10 +26,13 @@ const useCartStore = create(
   immer<State & Action>((set) => ({
     carts: [],
     totalPrice: 0,
+    updateTotalPrice: (totalPrice) => {
+      set((state) => {
+        state.totalPrice = totalPrice;
+      });
+    },
     addItem: (product) => {
       set((state) => {
-        state.totalPrice += product.price;
-
         state.carts.push({
           ...product,
           count: 1,
@@ -38,55 +42,34 @@ const useCartStore = create(
     },
     removeItem: (index) => {
       set((state) => {
-        const cartItem = state.carts[index];
-        state.totalPrice -= cartItem.discountPrice * cartItem.count;
-
         state.carts.splice(index, 1);
       });
     },
     updateItem: (index: number, fields: Partial<Cart>) => {
       set((state) => {
-        const cartItem = state.carts[index];
-        state.totalPrice -= cartItem.discountPrice * cartItem.count;
-
         state.carts[index] = {
           ...state.carts[index],
           ...fields,
         };
-
-        const updatedCartItem = state.carts[index];
-        state.totalPrice +=
-          updatedCartItem.discountPrice * updatedCartItem.count;
       });
     },
-    discountClear: () => {
+    discountUnselect: () => {
       set((state) => {
-        let totalPrice = 0;
-
         state.carts.forEach((cartItem, index) => {
           state.carts[index].discountPrice = cartItem.price;
-          totalPrice += cartItem.price * cartItem.count;
         });
-
-        state.totalPrice = totalPrice;
       });
     },
     discountByRate: (discountRate) => {
       set((state) => {
-        let totalPrice = 0;
         state.carts.forEach((cartItem, index) => {
           if (cartItem.availableCoupon === false) {
-            totalPrice += cartItem.price * cartItem.count;
             return;
           }
 
-          const discountPrice = cartItem.price * ((100 - discountRate) / 100);
-          state.carts[index].discountPrice = discountPrice;
-
-          totalPrice += discountPrice * cartItem.count;
+          state.carts[index].discountPrice =
+            cartItem.price * ((100 - discountRate) / 100);
         });
-
-        state.totalPrice = totalPrice;
       });
     },
     discountByAmount: (discountAmount) => {
