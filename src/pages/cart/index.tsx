@@ -17,18 +17,23 @@ const Cart = () => {
 
   const handleSelectCoupon = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const couponId = +e.target.value;
-    const coupon = availableCoupons?.find((coupon) => coupon.id === couponId);
 
     onCouponSelect(couponId);
+    if (couponId === -1) {
+      onDiscountUnselect();
+      return;
+    }
+
+    const coupon = availableCoupons?.find((coupon) => coupon.id === couponId);
 
     if (coupon) {
-      if (coupon.type === "rate") {
-        onDiscountByRate(coupon.discountRate);
-      } else if (coupon.type === "amount") {
-        onDiscountByAmount(coupon.discountAmount);
+      switch (coupon.type) {
+        case "rate":
+          onDiscountByRate(coupon.discountRate);
+          break;
+        case "amount":
+          onDiscountByAmount(coupon.discountAmount);
       }
-    } else {
-      onDiscountUnselect();
     }
   };
 
