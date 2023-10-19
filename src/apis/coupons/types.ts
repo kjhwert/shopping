@@ -1,4 +1,5 @@
 interface BaseCoupon {
+  id: number;
   title: string;
 }
 
