@@ -21,6 +21,7 @@ const Products = () => {
         order: "desc",
       },
     }),
+    suspense: true,
   });
 
   const handlePageChange = useCallback((page: number) => {
@@ -28,7 +29,7 @@ const Products = () => {
   }, []);
 
   if (!data) {
-    return <div>Loading...</div>;
+    return null;
   }
 
   const { products, meta } = data;

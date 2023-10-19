@@ -1,3 +1,4 @@
+import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import * as S from "./styles";
 
@@ -24,7 +25,9 @@ const GNB = () => {
           </S.NavLink>
         </S.NavList>
       </S.NavigationBar>
-      <Outlet />
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <Outlet />
+      </React.Suspense>
     </>
   );
 };
