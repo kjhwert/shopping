@@ -1,30 +1,34 @@
-import useCart from "../../stores/cart";
+import useCart from "./hooks/useCart";
 import * as S from "./styles";
-import { getCouponsQuery } from "../../apis/coupons/queries";
-import { useQuery } from "@tanstack/react-query";
+import useCoupon from "./hooks/useCoupon";
 
 const Cart = () => {
-  const { data: coupons } = useQuery({
-    ...getCouponsQuery(),
-  });
+  const { availableCoupons, selectedCoupon, onCouponSelect } = useCoupon();
 
   const {
     carts,
     totalPrice,
     onRemoveItem,
     onUpdateItem,
-    onUpdateItemsByDiscountRate,
+    onDiscountClear,
+    onDiscountByRate,
     onDiscountByAmount,
   } = useCart();
 
   const handleSelectCoupon = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const coupon = e.target.value;
+    const couponId = +e.target.value;
+    const coupon = availableCoupons?.find((coupon) => coupon.id === couponId);
 
-    const [type, discount] = coupon.split("-");
-    if (type === "rate") {
-      onUpdateItemsByDiscountRate(Number(discount));
+    onCouponSelect(couponId);
+
+    if (coupon) {
+      if (coupon.type === "rate") {
+        onDiscountByRate(coupon.discountRate);
+      } else if (coupon.type === "amount") {
+        onDiscountByAmount(coupon.discountAmount);
+      }
     } else {
-      onDiscountByAmount(Number(discount));
+      onDiscountClear();
     }
   };
 
@@ -77,20 +81,13 @@ const Cart = () => {
       </S.Table>
       <S.Section>
         <h1>쿠폰</h1>
-        <select onChange={handleSelectCoupon}>
-          {coupons?.map((coupon) => {
-            const optionValue = `${coupon.type}-${
-              coupon.type === "rate"
-                ? coupon.discountRate
-                : coupon.discountAmount
-            }`;
-
-            return (
-              <option key={`coupon-option-${coupon.title}`} value={optionValue}>
-                {coupon.title}
-              </option>
-            );
-          })}
+        <select value={selectedCoupon?.id} onChange={handleSelectCoupon}>
+          <option value="-1">선택 안함</option>
+          {availableCoupons.map((coupon) => (
+            <option key={`coupon-option-${coupon.id}`} value={coupon.id}>
+              {coupon.title}
+            </option>
+          ))}
         </select>
       </S.Section>
       <S.Section>
