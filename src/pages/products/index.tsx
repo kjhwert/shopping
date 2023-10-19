@@ -27,9 +27,8 @@ const Products = () => {
     setPage(page);
   }, []);
 
-  // TODO Loading Spinner 구현 후 제거
   if (!data) {
-    return null;
+    return <div>Loading...</div>;
   }
 
   const { products, meta } = data;

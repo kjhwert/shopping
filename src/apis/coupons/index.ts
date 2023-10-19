@@ -5,6 +5,6 @@ export const getCoupons = (): Promise<Coupon[]> => {
   return new Promise((resolve) => {
     window.setTimeout(() => {
       resolve(coupons);
-    }, 0);
+    }, 500);
   });
 };

@@ -48,6 +48,6 @@ export const getProducts = (
       };
 
       resolve(response);
-    }, 0);
+    }, 500);
   });
 };
