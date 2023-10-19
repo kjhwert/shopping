@@ -60,7 +60,7 @@ const useCart = () => {
       0,
     );
 
-    updateTotalPrice(totalPrice);
+    updateTotalPrice(Math.floor(totalPrice));
   }, [carts, updateTotalPrice]);
 
   const handleDiscountUnselect = useCallback(() => {
