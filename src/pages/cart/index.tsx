@@ -12,6 +12,8 @@ const Cart = () => {
   const {
     carts,
     totalPrice,
+    isAllChecked,
+    onCheckAll,
     onRemoveItem,
     onUpdateItem,
     onDiscountUnselect,
@@ -69,7 +71,11 @@ const Cart = () => {
           <tr>
             <S.HeaderColumnCheckbox>
               <S.Content>
-                <input type="checkbox" checked={true} />
+                <input
+                  type="checkbox"
+                  checked={isAllChecked}
+                  onChange={(e) => onCheckAll(e.target.checked)}
+                />
               </S.Content>
             </S.HeaderColumnCheckbox>
             <S.HeaderColumnProduct>상품정보</S.HeaderColumnProduct>

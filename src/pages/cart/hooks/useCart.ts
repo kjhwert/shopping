@@ -33,6 +33,11 @@ const useCart = () => {
     [carts, discountRate],
   );
 
+  const isAllChecked = useMemo(
+    () => memoizedCartItems.every((cartItem) => cartItem.checked),
+    [memoizedCartItems],
+  );
+
   const totalPrice = useMemo(() => {
     const discountPricesByRate = memoizedCartItems
       .filter((cart) => cart.checked)
@@ -76,9 +81,20 @@ const useCart = () => {
     [onDiscountByAmount, onInitializeDiscountRate],
   );
 
+  const handleCheckAll = useCallback(
+    (checked: boolean) => {
+      memoizedCartItems.forEach((cartItem) => {
+        handleUpdateItem(cartItem.item_no, { checked });
+      });
+    },
+    [handleUpdateItem, memoizedCartItems],
+  );
+
   return {
     carts: memoizedCartItems,
     totalPrice,
+    isAllChecked,
+    onCheckAll: handleCheckAll,
     onUpdateItem: handleUpdateItem,
     onRemoveItem: handleRemoveItem,
     onDiscountUnselect: handleDiscountUnselect,
