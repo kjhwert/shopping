@@ -3,6 +3,7 @@ import * as S from "./styles";
 import useCoupon from "./hooks/useCoupon";
 import { useNavigate } from "react-router-dom";
 import { useMemo } from "react";
+import { BodyContent } from "./styles";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -64,81 +65,71 @@ const Cart = () => {
 
   return (
     <S.Layout>
-      <S.CartSection>
-        <S.Table>
-          <thead>
-            <tr>
-              <S.HeaderColumnCheckbox>선택</S.HeaderColumnCheckbox>
-              <S.HeaderColumnProduct>상품정보</S.HeaderColumnProduct>
-              <S.HeaderColumn>수량</S.HeaderColumn>
-              <S.HeaderColumn>주문금액</S.HeaderColumn>
+      <S.Table>
+        <thead>
+          <tr>
+            <S.HeaderColumnProduct>상품정보</S.HeaderColumnProduct>
+            <S.HeaderColumn>수량</S.HeaderColumn>
+            <S.HeaderColumn>주문금액</S.HeaderColumn>
+          </tr>
+        </thead>
+        <tbody>
+          {carts.map((cartItem, index) => (
+            <tr key={cartItem.item_no}>
+              <S.BodyColumn>
+                <S.BodyColumnProduct>
+                  <input
+                    type="checkbox"
+                    checked={cartItem.checked}
+                    onChange={(e) =>
+                      onUpdateItem(index, { checked: e.target.checked })
+                    }
+                  />
+                  <S.Image src={cartItem.detail_image_url} alt="상품 이미지" />
+                  <div>{cartItem.item_name}</div>
+                  <button onClick={() => onRemoveItem(index)}>remove</button>
+                </S.BodyColumnProduct>
+              </S.BodyColumn>
+              <S.BodyColumn>
+                <S.BodyContent>
+                  <input
+                    type="number"
+                    value={cartItem.count}
+                    min={1}
+                    onChange={(e) =>
+                      onUpdateItem(index, { count: Number(e.target.value) })
+                    }
+                  />
+                </S.BodyContent>
+              </S.BodyColumn>
+              <S.BodyColumn>
+                <S.BodyColumnPrice>
+                  {(cartItem.discountPrice * cartItem.count).toLocaleString()}
+                </S.BodyColumnPrice>
+              </S.BodyColumn>
             </tr>
-          </thead>
-          <tbody>
-            {carts.map((cartItem, index) => (
-              <tr key={cartItem.item_no}>
-                <td>
-                  <S.BodyColumn>
-                    <input
-                      type="checkbox"
-                      checked={cartItem.checked}
-                      onChange={(e) =>
-                        onUpdateItem(index, { checked: e.target.checked })
-                      }
-                    />
-                  </S.BodyColumn>
-                </td>
-                <td>
-                  <S.BodyColumnProduct>
-                    <S.Image
-                      src={cartItem.detail_image_url}
-                      alt="상품 이미지"
-                    />
-                    <div>{cartItem.item_name}</div>
-                    <button onClick={() => onRemoveItem(index)}>remove</button>
-                  </S.BodyColumnProduct>
-                </td>
-                <td>
-                  <S.BodyColumn>
-                    <input
-                      type="number"
-                      value={cartItem.count}
-                      min={1}
-                      onChange={(e) =>
-                        onUpdateItem(index, { count: Number(e.target.value) })
-                      }
-                    />
-                  </S.BodyColumn>
-                </td>
-                <td>
-                  <S.BodyColumnPrice>
-                    {(cartItem.discountPrice * cartItem.count).toLocaleString()}
-                  </S.BodyColumnPrice>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </S.Table>
-        <S.Section>
-          <h1>쿠폰</h1>
-          <select
-            disabled={!haveItemsToAvailableCoupon}
-            value={selectedCoupon?.id}
-            onChange={handleSelectCoupon}
-          >
-            <option value="-1">선택 안함</option>
-            {availableCoupons.map((coupon) => (
-              <option key={`coupon-option-${coupon.id}`} value={coupon.id}>
-                {coupon.title}
-              </option>
-            ))}
-          </select>
-        </S.Section>
-        <S.Section>
-          <h1>총 결제금액</h1>
-          <p>{totalPrice.toLocaleString()}</p>
-        </S.Section>
-      </S.CartSection>
+          ))}
+        </tbody>
+      </S.Table>
+      <S.Section>
+        <h1>쿠폰</h1>
+        <select
+          disabled={!haveItemsToAvailableCoupon}
+          value={selectedCoupon?.id}
+          onChange={handleSelectCoupon}
+        >
+          <option value="-1">선택 안함</option>
+          {availableCoupons.map((coupon) => (
+            <option key={`coupon-option-${coupon.id}`} value={coupon.id}>
+              {coupon.title}
+            </option>
+          ))}
+        </select>
+      </S.Section>
+      <S.Section>
+        <h1>총 결제금액</h1>
+        <p>{totalPrice.toLocaleString()}</p>
+      </S.Section>
     </S.Layout>
   );
 };

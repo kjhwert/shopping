@@ -1,18 +1,20 @@
 import styled from "@emotion/styled";
 
-export const Layout = styled.main``;
+export const Layout = styled.main`
+  padding: 20px 2% 0 2%;
+`;
 
 export const Table = styled.table`
+  border-top: 4px solid #000;
   width: 100%;
+  border-collapse: collapse;
 `;
 
 export const HeaderColumn = styled.th`
+  padding: 20px 0;
   width: 200px;
   font-size: 18px;
-`;
-
-export const HeaderColumnCheckbox = styled(HeaderColumn)`
-  width: 5%;
+  border-bottom: 1px solid #d4d4d4;
 `;
 
 export const HeaderColumnProduct = styled(HeaderColumn)`
@@ -24,18 +26,32 @@ export const Image = styled.img`
   height: 110px;
 `;
 
-export const BodyColumn = styled.div`
+export const BodyColumn = styled.td`
+  border: 1px solid #d4d4d4;
+  padding: 5px 0;
+
+  &:first-child {
+    border-left: none;
+  }
+
+  &:last-child {
+    border-right: none;
+  }
+`;
+
+export const BodyContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
-export const BodyColumnProduct = styled(BodyColumn)`
+export const BodyColumnProduct = styled(BodyContent)`
+  padding-left: 10px;
   justify-content: flex-start;
-  gap: 10px;
+  gap: 20px;
 `;
 
-export const BodyColumnPrice = styled(BodyColumn)`
+export const BodyColumnPrice = styled(BodyContent)`
   display: flex;
   flex-direction: column;
 `;
@@ -48,10 +64,7 @@ export const Section = styled.section`
   flex-direction: column;
 `;
 
-export const CartSection = styled.section``;
-
 export const EmptyCart = styled.section`
-  margin-top: 100px;
   padding: 60px 0;
   gap: 40px;
   width: 100%;
