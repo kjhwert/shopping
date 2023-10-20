@@ -2,21 +2,21 @@ import { create } from "zustand";
 import { Product } from "../../apis/products/types";
 import { immer } from "zustand/middleware/immer";
 
-export interface Cart extends Product {
+export interface CartItem extends Product {
   count: number;
   discountPrice: number;
   checked: boolean;
 }
 
 type State = {
-  carts: Cart[];
+  carts: CartItem[];
   totalPrice: number;
 };
 
 type Action = {
   addItem: (product: Product) => void;
   removeItem: (index: number) => void;
-  updateItem: (index: number, fields: Partial<Cart>) => void;
+  updateItem: (index: number, fields: Partial<CartItem>) => void;
   updateTotalPrice: (totalPrice: number) => void;
   discountUnselect: () => void;
   discountByRate: (discountRate: number) => void;
@@ -84,7 +84,7 @@ const useCartStore = create(
         state.carts.splice(index, 1);
       });
     },
-    updateItem: (index: number, fields: Partial<Cart>) => {
+    updateItem: (index: number, fields: Partial<CartItem>) => {
       set((state) => {
         state.carts[index] = {
           ...state.carts[index],

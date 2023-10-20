@@ -1,4 +1,4 @@
-import useCartStore, { Cart } from "../../../stores/cart/useCartStore";
+import useCartStore, { CartItem } from "../../../stores/cart/useCartStore";
 import { useCallback, useEffect, useMemo } from "react";
 import { Product } from "../../../apis/products/types";
 
@@ -48,7 +48,7 @@ const useCart = () => {
   );
 
   const handleUpdateItem = useCallback(
-    (index: number, fields: Partial<Cart>) => {
+    (index: number, fields: Partial<CartItem>) => {
       updateItem(index, fields);
     },
     [updateItem],
