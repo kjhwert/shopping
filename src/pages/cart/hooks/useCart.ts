@@ -72,7 +72,7 @@ const useCart = () => {
       initializeDiscountAmount();
       discountByRate(discountRate);
     },
-    [discountByRate],
+    [discountByRate, initializeDiscountAmount],
   );
 
   const handleDiscountByAmount = useCallback(
@@ -80,7 +80,7 @@ const useCart = () => {
       initializeDiscountPrices();
       discountByAmount(discount);
     },
-    [discountByAmount],
+    [discountByAmount, initializeDiscountPrices],
   );
 
   return {
