@@ -38,7 +38,7 @@ const useCart = () => {
       .filter((cart) => cart.checked)
       .reduce((prev, next) => prev + next.discountPrice * next.count, 0);
 
-    return discountPricesByRate - discountAmount;
+    return Math.floor(discountPricesByRate - discountAmount);
   }, [memoizedCartItems, discountAmount]);
 
   const handleUpdateItem = useCallback(
