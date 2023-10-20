@@ -1,21 +1,29 @@
 import useCartStore, { CartItem } from "../../../stores/cart/useCartStore";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { Product } from "../../../apis/products/types";
 
 const useCart = () => {
   const {
     carts,
-    totalPrice,
+    discountAmount,
     addItem,
     removeItem,
     updateItem,
-    discountUnselect,
     discountByRate,
     discountByAmount,
-    updateTotalPrice,
+    initializeDiscountPrices,
+    initializeDiscountAmount,
   } = useCartStore((state) => state);
 
   const isCartFull = useMemo(() => carts.length >= 3, [carts]);
+
+  const totalPrice = useMemo(() => {
+    const discountPricesByRate = carts
+      .filter((cart) => cart.checked)
+      .reduce((prev, next) => prev + next.discountPrice * next.count, 0);
+
+    return discountPricesByRate - discountAmount;
+  }, [carts, discountAmount]);
 
   const handleAddItem = useCallback(
     (product: Product) => {
@@ -54,21 +62,14 @@ const useCart = () => {
     [updateItem],
   );
 
-  const handleTotalPriceChange = useCallback(() => {
-    const totalPrice = carts
-      .filter((cart) => cart.checked)
-      .reduce((prev, next) => prev + next.discountPrice * next.count, 0);
-
-    updateTotalPrice(Math.floor(totalPrice));
-  }, [carts, updateTotalPrice]);
-
   const handleDiscountUnselect = useCallback(() => {
-    handleTotalPriceChange();
-    discountUnselect();
-  }, [handleTotalPriceChange, discountUnselect]);
+    initializeDiscountAmount();
+    initializeDiscountPrices();
+  }, [initializeDiscountAmount, initializeDiscountPrices]);
 
   const handleDiscountByRate = useCallback(
     (discountRate: number) => {
+      initializeDiscountAmount();
       discountByRate(discountRate);
     },
     [discountByRate],
@@ -76,14 +77,11 @@ const useCart = () => {
 
   const handleDiscountByAmount = useCallback(
     (discount: number) => {
+      initializeDiscountPrices();
       discountByAmount(discount);
     },
     [discountByAmount],
   );
-
-  useEffect(() => {
-    handleTotalPriceChange();
-  }, [handleTotalPriceChange]);
 
   return {
     carts,
