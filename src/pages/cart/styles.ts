@@ -54,14 +54,8 @@ export const BodyColumnProduct = styled(BodyContent)`
 export const BodyColumnPrice = styled(BodyContent)`
   display: flex;
   flex-direction: column;
-`;
-
-export const Section = styled.section`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+  font-weight: bold;
+  color: #000;
 `;
 
 export const EmptyCart = styled.section`
@@ -88,4 +82,26 @@ export const MoveToShopButton = styled.button`
   &:hover {
     color: #ff4800;
   }
+`;
+
+export const Section = styled.section`
+  border-top: 4px solid #000;
+  border-bottom: 1px solid #d4d4d4;
+  width: 100%;
+  display: flex;
+  margin-top: 20px;
+  padding: 20px 0 40px 0;
+`;
+
+export const CouponSection = styled.div`
+  flex: 1;
+`;
+
+export const PaymentPriceSection = styled.div`
+  flex: 1;
+`;
+
+export const TotalPaymentPrice = styled.span`
+  font-size: 32px;
+  font-weight: bold;
 `;

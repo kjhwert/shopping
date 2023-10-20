@@ -3,7 +3,6 @@ import * as S from "./styles";
 import useCoupon from "./hooks/useCoupon";
 import { useNavigate } from "react-router-dom";
 import { useMemo } from "react";
-import { BodyContent } from "./styles";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -112,23 +111,28 @@ const Cart = () => {
         </tbody>
       </S.Table>
       <S.Section>
-        <h1>쿠폰</h1>
-        <select
-          disabled={!haveItemsToAvailableCoupon}
-          value={selectedCoupon?.id}
-          onChange={handleSelectCoupon}
-        >
-          <option value="-1">선택 안함</option>
-          {availableCoupons.map((coupon) => (
-            <option key={`coupon-option-${coupon.id}`} value={coupon.id}>
-              {coupon.title}
-            </option>
-          ))}
-        </select>
-      </S.Section>
-      <S.Section>
-        <h1>총 결제금액</h1>
-        <p>{totalPrice.toLocaleString()}</p>
+        <S.CouponSection>
+          <h1>쿠폰</h1>
+          <select
+            disabled={!haveItemsToAvailableCoupon}
+            value={selectedCoupon?.id}
+            onChange={handleSelectCoupon}
+          >
+            <option value="-1">선택 안함</option>
+            {availableCoupons.map((coupon) => (
+              <option key={`coupon-option-${coupon.id}`} value={coupon.id}>
+                {coupon.title}
+              </option>
+            ))}
+          </select>
+        </S.CouponSection>
+        <S.PaymentPriceSection>
+          <h1>총 결제금액</h1>
+          <S.TotalPaymentPrice>
+            {totalPrice.toLocaleString()}
+          </S.TotalPaymentPrice>
+          원
+        </S.PaymentPriceSection>
       </S.Section>
     </S.Layout>
   );
