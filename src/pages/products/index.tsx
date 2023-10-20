@@ -4,11 +4,11 @@ import * as S from "./styles";
 import IconScore from "../../assets/icons/IconScore";
 import Pagination from "../../components/Pagination";
 import { useCallback, useState } from "react";
-import IconShoppingBag from "../../assets/icons/IconShoppingBag";
 import useCart from "./hooks/useCart";
+import IconShoppingCart from "../../assets/icons/IconShoppingCart";
 
 const Products = () => {
-  const { onCreateOrDeleteItem } = useCart();
+  const { isItemInCart, onCreateOrDeleteItem } = useCart();
 
   const [page, setPage] = useState(1);
 
@@ -40,7 +40,7 @@ const Products = () => {
         {products.map((product) => (
           <S.Product key={product.item_no}>
             <S.ShoppingBagWrapper onClick={() => onCreateOrDeleteItem(product)}>
-              <IconShoppingBag />
+              <IconShoppingCart isActive={isItemInCart(product.item_no)} />
             </S.ShoppingBagWrapper>
             <S.Image src={product.detail_image_url} alt="상품 이미지" />
             <S.Info>

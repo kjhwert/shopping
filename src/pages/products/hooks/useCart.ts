@@ -6,6 +6,14 @@ const useCart = () => {
   const { carts, onRemoveItem, onAddItem } = useCartStore((state) => state);
 
   const isCartFull = useMemo(() => carts.length >= 3, [carts]);
+
+  const isItemInCart = useCallback(
+    (item_no: number) => {
+      return carts.some((cart) => cart.item_no === item_no);
+    },
+    [carts],
+  );
+
   const handleAddItem = useCallback(
     (product: Product) => {
       if (isCartFull) {
@@ -39,6 +47,7 @@ const useCart = () => {
   );
 
   return {
+    isItemInCart,
     onCreateOrDeleteItem: handleCreateOrDeleteItem,
   };
 };
