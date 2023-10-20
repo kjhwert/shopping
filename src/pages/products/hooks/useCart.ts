@@ -3,7 +3,7 @@ import { Product } from "../../../apis/products/types";
 import useCartStore from "../../../stores/cart/useCartStore";
 
 const useCart = () => {
-  const { carts, removeItem, addItem } = useCartStore((state) => state);
+  const { carts, onRemoveItem, onAddItem } = useCartStore((state) => state);
 
   const isCartFull = useMemo(() => carts.length >= 3, [carts]);
   const handleAddItem = useCallback(
@@ -13,16 +13,16 @@ const useCart = () => {
         return;
       }
 
-      addItem(product);
+      onAddItem(product);
     },
-    [addItem, isCartFull],
+    [onAddItem, isCartFull],
   );
 
   const handleRemoveItem = useCallback(
     (index: number) => {
-      removeItem(index);
+      onRemoveItem(index);
     },
-    [removeItem],
+    [onRemoveItem],
   );
 
   const handleCreateOrDeleteItem = useCallback(

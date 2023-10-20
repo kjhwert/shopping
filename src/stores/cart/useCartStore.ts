@@ -14,13 +14,13 @@ type State = {
 };
 
 type Action = {
-  addItem: (product: Product) => void;
-  removeItem: (item_no: number) => void;
-  updateItem: (item_no: number, fields: Partial<CartItem>) => void;
-  discountByRate: (discountRate: number) => void;
-  discountByAmount: (discountAmount: number) => void;
-  initializeDiscountRate: () => void;
-  initializeDiscountAmount: () => void;
+  onAddItem: (product: Product) => void;
+  onRemoveItem: (item_no: number) => void;
+  onUpdateItem: (item_no: number, fields: Partial<CartItem>) => void;
+  onDiscountByRate: (discountRate: number) => void;
+  onDiscountByAmount: (discountAmount: number) => void;
+  onInitializeDiscountRate: () => void;
+  onInitializeDiscountAmount: () => void;
 };
 
 const useCartStore = create(
@@ -28,7 +28,7 @@ const useCartStore = create(
     carts: [],
     discountRate: 0,
     discountAmount: 0,
-    addItem: (product) => {
+    onAddItem: (product) => {
       set((state) => {
         state.carts.push({
           ...product,
@@ -37,7 +37,7 @@ const useCartStore = create(
         });
       });
     },
-    removeItem: (item_no) => {
+    onRemoveItem: (item_no) => {
       set((state) => {
         const index = state.carts.findIndex(
           (cartItem) => cartItem.item_no === item_no,
@@ -47,7 +47,7 @@ const useCartStore = create(
         }
       });
     },
-    updateItem: (item_no, fields) => {
+    onUpdateItem: (item_no, fields) => {
       set((state) => {
         const index = state.carts.findIndex(
           (cartItem) => cartItem.item_no === item_no,
@@ -60,22 +60,22 @@ const useCartStore = create(
         }
       });
     },
-    discountByRate: (discountRate) => {
+    onDiscountByRate: (discountRate) => {
       set((state) => {
         state.discountRate = discountRate;
       });
     },
-    discountByAmount: (discountAmount) => {
+    onDiscountByAmount: (discountAmount) => {
       set((state) => {
         state.discountAmount = discountAmount;
       });
     },
-    initializeDiscountRate: () => {
+    onInitializeDiscountRate: () => {
       set((state) => {
         state.discountRate = 0;
       });
     },
-    initializeDiscountAmount: () => {
+    onInitializeDiscountAmount: () => {
       set((state) => {
         state.discountAmount = 0;
       });

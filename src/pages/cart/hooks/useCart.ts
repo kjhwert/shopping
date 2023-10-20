@@ -10,12 +10,12 @@ const useCart = () => {
     carts,
     discountRate,
     discountAmount,
-    updateItem,
-    removeItem,
-    discountByRate,
-    discountByAmount,
-    initializeDiscountRate,
-    initializeDiscountAmount,
+    onUpdateItem,
+    onRemoveItem,
+    onDiscountByRate,
+    onDiscountByAmount,
+    onInitializeDiscountRate,
+    onInitializeDiscountAmount,
   } = useCartStore((state) => state);
 
   const memoizedCartItems: MemoizedCartItem[] = useMemo(
@@ -43,37 +43,37 @@ const useCart = () => {
 
   const handleUpdateItem = useCallback(
     (item_no: number, fields: Partial<CartItem>) => {
-      updateItem(item_no, fields);
+      onUpdateItem(item_no, fields);
     },
-    [updateItem],
+    [onUpdateItem],
   );
 
   const handleRemoveItem = useCallback(
     (item_no: number) => {
-      removeItem(item_no);
+      onRemoveItem(item_no);
     },
-    [removeItem],
+    [onRemoveItem],
   );
 
   const handleDiscountUnselect = useCallback(() => {
-    initializeDiscountAmount();
-    initializeDiscountRate();
-  }, [initializeDiscountAmount, initializeDiscountRate]);
+    onInitializeDiscountAmount();
+    onInitializeDiscountRate();
+  }, [onInitializeDiscountAmount, onInitializeDiscountRate]);
 
   const handleDiscountByRate = useCallback(
     (discountRate: number) => {
-      initializeDiscountAmount();
-      discountByRate(discountRate);
+      onInitializeDiscountAmount();
+      onDiscountByRate(discountRate);
     },
-    [discountByRate, initializeDiscountAmount],
+    [onDiscountByRate, onInitializeDiscountAmount],
   );
 
   const handleDiscountByAmount = useCallback(
     (discount: number) => {
-      initializeDiscountRate();
-      discountByAmount(discount);
+      onInitializeDiscountRate();
+      onDiscountByAmount(discount);
     },
-    [discountByAmount, initializeDiscountRate],
+    [onDiscountByAmount, onInitializeDiscountRate],
   );
 
   return {
