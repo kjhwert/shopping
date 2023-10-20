@@ -5,7 +5,7 @@ import IconScore from "../../assets/icons/IconScore";
 import Pagination from "../../components/Pagination";
 import { useCallback, useState } from "react";
 import IconShoppingBag from "../../assets/icons/IconShoppingBag";
-import useCart from "../cart/hooks/useCart";
+import useCart from "./hooks/useCart";
 
 const Products = () => {
   const { onCreateOrDeleteItem } = useCart();
