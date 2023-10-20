@@ -63,7 +63,7 @@ const useCartStore = create(
     discountByRate: (discountRate) => {
       set((state) => {
         state.carts.forEach((cartItem, index) => {
-          if (cartItem.availableCoupon === false) {
+          if (!cartItem.checked || cartItem.availableCoupon === false) {
             return;
           }
 
