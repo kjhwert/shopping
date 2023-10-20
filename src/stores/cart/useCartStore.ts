@@ -4,13 +4,13 @@ import { immer } from "zustand/middleware/immer";
 
 export interface CartItem extends Product {
   count: number;
-  discountPrice: number;
   checked: boolean;
 }
 
 type State = {
   carts: CartItem[];
   discountAmount: number;
+  discountRate: number;
 };
 
 type Action = {
@@ -19,20 +19,20 @@ type Action = {
   updateItem: (item_no: number, fields: Partial<CartItem>) => void;
   discountByRate: (discountRate: number) => void;
   discountByAmount: (discountAmount: number) => void;
-  initializeDiscountPrices: () => void;
+  initializeDiscountRate: () => void;
   initializeDiscountAmount: () => void;
 };
 
 const useCartStore = create(
   immer<State & Action>((set) => ({
     carts: [],
+    discountRate: 0,
     discountAmount: 0,
     addItem: (product) => {
       set((state) => {
         state.carts.push({
           ...product,
           count: 1,
-          discountPrice: product.price,
           checked: true,
         });
       });
@@ -62,14 +62,7 @@ const useCartStore = create(
     },
     discountByRate: (discountRate) => {
       set((state) => {
-        state.carts.forEach((cartItem, index) => {
-          if (!cartItem.checked || cartItem.availableCoupon === false) {
-            return;
-          }
-
-          state.carts[index].discountPrice =
-            cartItem.price * ((100 - discountRate) / 100);
-        });
+        state.discountRate = discountRate;
       });
     },
     discountByAmount: (discountAmount) => {
@@ -77,11 +70,9 @@ const useCartStore = create(
         state.discountAmount = discountAmount;
       });
     },
-    initializeDiscountPrices: () => {
+    initializeDiscountRate: () => {
       set((state) => {
-        state.carts.forEach((cartItem, index) => {
-          state.carts[index].discountPrice = cartItem.price;
-        });
+        state.discountRate = 0;
       });
     },
     initializeDiscountAmount: () => {

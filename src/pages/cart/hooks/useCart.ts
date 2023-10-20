@@ -1,25 +1,45 @@
 import useCartStore, { CartItem } from "../../../stores/cart/useCartStore";
 import { useCallback, useMemo } from "react";
 
+export interface MemoizedCartItem extends CartItem {
+  discountPrice: number;
+}
+
 const useCart = () => {
   const {
     carts,
+    discountRate,
     discountAmount,
     updateItem,
     removeItem,
     discountByRate,
     discountByAmount,
-    initializeDiscountPrices,
+    initializeDiscountRate,
     initializeDiscountAmount,
   } = useCartStore((state) => state);
 
+  const memoizedCartItems: MemoizedCartItem[] = useMemo(
+    () =>
+      carts.map((cartItem) => {
+        const discountPrice = cartItem.checked
+          ? cartItem.price * ((100 - discountRate) / 100)
+          : cartItem.price;
+
+        return {
+          ...cartItem,
+          discountPrice,
+        };
+      }),
+    [carts, discountRate],
+  );
+
   const totalPrice = useMemo(() => {
-    const discountPricesByRate = carts
+    const discountPricesByRate = memoizedCartItems
       .filter((cart) => cart.checked)
       .reduce((prev, next) => prev + next.discountPrice * next.count, 0);
 
     return discountPricesByRate - discountAmount;
-  }, [carts, discountAmount]);
+  }, [memoizedCartItems, discountAmount]);
 
   const handleUpdateItem = useCallback(
     (item_no: number, fields: Partial<CartItem>) => {
@@ -37,8 +57,8 @@ const useCart = () => {
 
   const handleDiscountUnselect = useCallback(() => {
     initializeDiscountAmount();
-    initializeDiscountPrices();
-  }, [initializeDiscountAmount, initializeDiscountPrices]);
+    initializeDiscountRate();
+  }, [initializeDiscountAmount, initializeDiscountRate]);
 
   const handleDiscountByRate = useCallback(
     (discountRate: number) => {
@@ -50,14 +70,14 @@ const useCart = () => {
 
   const handleDiscountByAmount = useCallback(
     (discount: number) => {
-      initializeDiscountPrices();
+      initializeDiscountRate();
       discountByAmount(discount);
     },
-    [discountByAmount, initializeDiscountPrices],
+    [discountByAmount, initializeDiscountRate],
   );
 
   return {
-    carts,
+    carts: memoizedCartItems,
     totalPrice,
     onUpdateItem: handleUpdateItem,
     onRemoveItem: handleRemoveItem,
