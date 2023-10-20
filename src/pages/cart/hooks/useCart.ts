@@ -6,6 +6,7 @@ const useCart = () => {
     carts,
     discountAmount,
     updateItem,
+    removeItem,
     discountByRate,
     discountByAmount,
     initializeDiscountPrices,
@@ -25,6 +26,13 @@ const useCart = () => {
       updateItem(index, fields);
     },
     [updateItem],
+  );
+
+  const handleRemoveItem = useCallback(
+    (item_no: number) => {
+      removeItem(item_no);
+    },
+    [removeItem],
   );
 
   const handleDiscountUnselect = useCallback(() => {
@@ -52,6 +60,7 @@ const useCart = () => {
     carts,
     totalPrice,
     onUpdateItem: handleUpdateItem,
+    onRemoveItem: handleRemoveItem,
     onDiscountUnselect: handleDiscountUnselect,
     onDiscountByRate: handleDiscountByRate,
     onDiscountByAmount: handleDiscountByAmount,

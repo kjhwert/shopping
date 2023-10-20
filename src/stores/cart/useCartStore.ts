@@ -15,7 +15,7 @@ type State = {
 
 type Action = {
   addItem: (product: Product) => void;
-  removeItem: (index: number) => void;
+  removeItem: (item_no: number) => void;
   updateItem: (index: number, fields: Partial<CartItem>) => void;
   discountByRate: (discountRate: number) => void;
   discountByAmount: (discountAmount: number) => void;
@@ -37,9 +37,14 @@ const useCartStore = create(
         });
       });
     },
-    removeItem: (index) => {
+    removeItem: (item_no) => {
       set((state) => {
-        state.carts.splice(index, 1);
+        const index = state.carts.findIndex(
+          (cartItem) => cartItem.item_no === item_no,
+        );
+        if (index > -1) {
+          state.carts.splice(index, 1);
+        }
       });
     },
     updateItem: (index: number, fields: Partial<CartItem>) => {

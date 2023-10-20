@@ -27,7 +27,9 @@ const useCart = () => {
 
   const handleCreateOrDeleteItem = useCallback(
     (product: Product) => {
-      if (carts[product.item_no]) {
+      const cartItem = carts.find((cart) => cart.item_no === product.item_no);
+
+      if (cartItem) {
         handleRemoveItem(product.item_no);
       } else {
         handleAddItem(product);

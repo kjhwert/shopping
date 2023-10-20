@@ -86,7 +86,9 @@ const Cart = () => {
                   />
                   <S.Image src={cartItem.detail_image_url} alt="상품 이미지" />
                   <div>{cartItem.item_name}</div>
-                  <button onClick={() => onRemoveItem(index)}>remove</button>
+                  <button onClick={() => onRemoveItem(cartItem.item_no)}>
+                    remove
+                  </button>
                 </S.BodyColumnProduct>
               </S.BodyColumn>
               <S.BodyColumn>
