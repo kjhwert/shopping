@@ -16,7 +16,7 @@ type State = {
 type Action = {
   addItem: (product: Product) => void;
   removeItem: (item_no: number) => void;
-  updateItem: (index: number, fields: Partial<CartItem>) => void;
+  updateItem: (item_no: number, fields: Partial<CartItem>) => void;
   discountByRate: (discountRate: number) => void;
   discountByAmount: (discountAmount: number) => void;
   initializeDiscountPrices: () => void;
@@ -47,12 +47,17 @@ const useCartStore = create(
         }
       });
     },
-    updateItem: (index: number, fields: Partial<CartItem>) => {
+    updateItem: (item_no, fields) => {
       set((state) => {
-        state.carts[index] = {
-          ...state.carts[index],
-          ...fields,
-        };
+        const index = state.carts.findIndex(
+          (cartItem) => cartItem.item_no === item_no,
+        );
+        if (index > -1) {
+          state.carts[index] = {
+            ...state.carts[index],
+            ...fields,
+          };
+        }
       });
     },
     discountByRate: (discountRate) => {

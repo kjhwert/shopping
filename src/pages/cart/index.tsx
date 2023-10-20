@@ -73,7 +73,7 @@ const Cart = () => {
           </tr>
         </thead>
         <tbody>
-          {carts.map((cartItem, index) => (
+          {carts.map((cartItem) => (
             <tr key={cartItem.item_no}>
               <S.BodyColumn>
                 <S.BodyColumnProduct>
@@ -81,7 +81,9 @@ const Cart = () => {
                     type="checkbox"
                     checked={cartItem.checked}
                     onChange={(e) =>
-                      onUpdateItem(index, { checked: e.target.checked })
+                      onUpdateItem(cartItem.item_no, {
+                        checked: e.target.checked,
+                      })
                     }
                   />
                   <S.Image src={cartItem.detail_image_url} alt="상품 이미지" />
@@ -98,7 +100,9 @@ const Cart = () => {
                     value={cartItem.count}
                     min={1}
                     onChange={(e) =>
-                      onUpdateItem(index, { count: Number(e.target.value) })
+                      onUpdateItem(cartItem.item_no, {
+                        count: Number(e.target.value),
+                      })
                     }
                   />
                 </S.BodyContent>

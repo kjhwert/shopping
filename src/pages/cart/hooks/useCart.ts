@@ -22,8 +22,8 @@ const useCart = () => {
   }, [carts, discountAmount]);
 
   const handleUpdateItem = useCallback(
-    (index: number, fields: Partial<CartItem>) => {
-      updateItem(index, fields);
+    (item_no: number, fields: Partial<CartItem>) => {
+      updateItem(item_no, fields);
     },
     [updateItem],
   );
