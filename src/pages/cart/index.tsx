@@ -67,16 +67,21 @@ const Cart = () => {
       <S.Table>
         <thead>
           <tr>
+            <S.HeaderColumnCheckbox>
+              <S.Content>
+                <input type="checkbox" checked={true} />
+              </S.Content>
+            </S.HeaderColumnCheckbox>
             <S.HeaderColumnProduct>상품정보</S.HeaderColumnProduct>
-            <S.HeaderColumn>수량</S.HeaderColumn>
-            <S.HeaderColumn>주문금액</S.HeaderColumn>
+            <S.HeaderColumnCount>수량</S.HeaderColumnCount>
+            <S.HeaderColumnPrice>주문금액</S.HeaderColumnPrice>
           </tr>
         </thead>
         <tbody>
           {carts.map((cartItem) => (
             <tr key={cartItem.item_no}>
               <S.BodyColumn>
-                <S.BodyColumnProduct>
+                <S.Content>
                   <input
                     type="checkbox"
                     checked={cartItem.checked}
@@ -86,6 +91,10 @@ const Cart = () => {
                       })
                     }
                   />
+                </S.Content>
+              </S.BodyColumn>
+              <S.BodyColumn>
+                <S.BodyColumnProduct>
                   <S.Image src={cartItem.detail_image_url} alt="상품 이미지" />
                   <div>{cartItem.item_name}</div>
                   <button onClick={() => onRemoveItem(cartItem.item_no)}>
@@ -94,7 +103,7 @@ const Cart = () => {
                 </S.BodyColumnProduct>
               </S.BodyColumn>
               <S.BodyColumn>
-                <S.BodyContent>
+                <S.Content>
                   <input
                     type="number"
                     value={cartItem.count}
@@ -105,7 +114,7 @@ const Cart = () => {
                       })
                     }
                   />
-                </S.BodyContent>
+                </S.Content>
               </S.BodyColumn>
               <S.BodyColumn>
                 <S.BodyColumnPrice>

@@ -12,13 +12,30 @@ export const Table = styled.table`
 
 export const HeaderColumn = styled.th`
   padding: 20px 0;
-  width: 200px;
   font-size: 18px;
   border-bottom: 1px solid #d4d4d4;
 `;
 
+export const Content = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const HeaderColumnCheckbox = styled(HeaderColumn)`
+  width: 5%;
+`;
+
+export const HeaderColumnCount = styled(HeaderColumn)`
+  width: 20%;
+`;
+
+export const HeaderColumnPrice = styled(HeaderColumn)`
+  width: 15%;
+`;
+
 export const HeaderColumnProduct = styled(HeaderColumn)`
-  width: 50%;
+  width: 60%;
 `;
 
 export const Image = styled.img`
@@ -39,19 +56,13 @@ export const BodyColumn = styled.td`
   }
 `;
 
-export const BodyContent = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const BodyColumnProduct = styled(BodyContent)`
+export const BodyColumnProduct = styled(Content)`
   padding-left: 10px;
   justify-content: flex-start;
   gap: 20px;
 `;
 
-export const BodyColumnPrice = styled(BodyContent)`
+export const BodyColumnPrice = styled(Content)`
   display: flex;
   flex-direction: column;
   font-weight: bold;
@@ -90,7 +101,7 @@ export const Section = styled.section`
   width: 100%;
   display: flex;
   margin-top: 20px;
-  padding: 20px 0 40px 0;
+  padding: 20px 0 40px 20px;
 `;
 
 export const CouponSection = styled.div`
