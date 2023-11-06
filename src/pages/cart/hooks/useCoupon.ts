@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getCouponsQuery } from "../../../apis/coupons/queries";
 import { Coupon } from "../../../apis/coupons/types";
@@ -10,14 +10,11 @@ const useCoupon = () => {
 
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon>();
 
-  const handleCouponSelect = useCallback(
-    (id: number) => {
-      const coupon = availableCoupons?.find((coupon) => coupon.id === id);
+  const handleCouponSelect = (id: number) => {
+    const coupon = availableCoupons?.find((coupon) => coupon.id === id);
 
-      setSelectedCoupon(coupon);
-    },
-    [availableCoupons],
-  );
+    setSelectedCoupon(coupon);
+  };
 
   return {
     availableCoupons: availableCoupons ?? [],

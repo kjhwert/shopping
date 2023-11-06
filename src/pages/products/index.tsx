@@ -3,7 +3,7 @@ import { getProductsQuery } from "../../apis/products/queries";
 import * as S from "./styles";
 import IconScore from "../../assets/icons/IconScore";
 import Pagination from "../../components/Pagination";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import useCart from "./hooks/useCart";
 import IconShoppingCart from "../../assets/icons/IconShoppingCart";
 
@@ -24,9 +24,9 @@ const Products = () => {
     suspense: true,
   });
 
-  const handlePageChange = useCallback((page: number) => {
+  const handlePageChange = (page: number) => {
     setPage(page);
-  }, []);
+  };
 
   if (!data) {
     return null;

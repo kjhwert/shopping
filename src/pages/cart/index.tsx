@@ -2,7 +2,6 @@ import useCart from "./hooks/useCart";
 import * as S from "./styles";
 import useCoupon from "./hooks/useCoupon";
 import { useNavigate } from "react-router-dom";
-import { useMemo } from "react";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -21,13 +20,9 @@ const Cart = () => {
     onDiscountByAmount,
   } = useCart();
 
-  const haveItemsToAvailableCoupon = useMemo(
-    () =>
-      carts
-        .filter((cart) => cart.checked)
-        .some((cart) => cart.availableCoupon !== false),
-    [carts],
-  );
+  const haveItemsToAvailableCoupon = carts
+    .filter((cart) => cart.checked)
+    .some((cart) => cart.availableCoupon !== false);
 
   const handleSelectCoupon = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const couponId = +e.target.value;

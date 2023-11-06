@@ -1,5 +1,4 @@
 import useCartStore, { CartItem } from "../../../stores/cart/useCartStore";
-import { useCallback, useMemo } from "react";
 
 export interface MemoizedCartItem extends CartItem {
   discountPrice: number;
@@ -18,81 +17,59 @@ const useCart = () => {
     onInitializeDiscountAmount,
   } = useCartStore((state) => state);
 
-  const memoizedCartItems: MemoizedCartItem[] = useMemo(
-    () =>
-      carts.map((cartItem) => {
-        const discountPrice = cartItem.checked
-          ? cartItem.price * ((100 - discountRate) / 100)
-          : cartItem.price;
+  const memoizedCartItems: MemoizedCartItem[] = carts.map((cartItem) => {
+    const discountPrice = cartItem.checked
+      ? cartItem.price * ((100 - discountRate) / 100)
+      : cartItem.price;
 
-        return {
-          ...cartItem,
-          discountPrice,
-        };
-      }),
-    [carts, discountRate],
-  );
+    return {
+      ...cartItem,
+      discountPrice,
+    };
+  });
 
-  const isAllChecked = useMemo(
-    () => memoizedCartItems.every((cartItem) => cartItem.checked),
-    [memoizedCartItems],
-  );
+  const isAllChecked = memoizedCartItems.every((cartItem) => cartItem.checked);
 
-  const totalPrice = useMemo(() => {
+  const totalPrice = () => {
     const discountPricesByRate = memoizedCartItems
       .filter((cart) => cart.checked)
       .reduce((prev, next) => prev + next.discountPrice * next.count, 0);
 
     return Math.floor(discountPricesByRate - discountAmount);
-  }, [memoizedCartItems, discountAmount]);
+  };
 
-  const handleUpdateItem = useCallback(
-    (item_no: number, fields: Partial<CartItem>) => {
-      onUpdateItem(item_no, fields);
-    },
-    [onUpdateItem],
-  );
+  const handleUpdateItem = (item_no: number, fields: Partial<CartItem>) => {
+    onUpdateItem(item_no, fields);
+  };
 
-  const handleRemoveItem = useCallback(
-    (item_no: number) => {
-      onRemoveItem(item_no);
-    },
-    [onRemoveItem],
-  );
+  const handleRemoveItem = (item_no: number) => {
+    onRemoveItem(item_no);
+  };
 
-  const handleDiscountUnselect = useCallback(() => {
+  const handleDiscountUnselect = () => {
     onInitializeDiscountAmount();
     onInitializeDiscountRate();
-  }, [onInitializeDiscountAmount, onInitializeDiscountRate]);
+  };
 
-  const handleDiscountByRate = useCallback(
-    (discountRate: number) => {
-      onInitializeDiscountAmount();
-      onDiscountByRate(discountRate);
-    },
-    [onDiscountByRate, onInitializeDiscountAmount],
-  );
+  const handleDiscountByRate = (discountRate: number) => {
+    onInitializeDiscountAmount();
+    onDiscountByRate(discountRate);
+  };
 
-  const handleDiscountByAmount = useCallback(
-    (discount: number) => {
-      onInitializeDiscountRate();
-      onDiscountByAmount(discount);
-    },
-    [onDiscountByAmount, onInitializeDiscountRate],
-  );
+  const handleDiscountByAmount = (discount: number) => {
+    onInitializeDiscountRate();
+    onDiscountByAmount(discount);
+  };
 
-  const handleCheckAll = useCallback(
-    (checked: boolean) => {
-      memoizedCartItems.forEach((cartItem) => {
-        handleUpdateItem(cartItem.item_no, { checked });
-      });
-    },
-    [handleUpdateItem, memoizedCartItems],
-  );
+  const handleCheckAll = (checked: boolean) => {
+    memoizedCartItems.forEach((cartItem) => {
+      handleUpdateItem(cartItem.item_no, { checked });
+    });
+  };
 
   return {
     carts: memoizedCartItems,
-    totalPrice,
+    totalPrice: totalPrice(),
     isAllChecked,
     onCheckAll: handleCheckAll,
     onUpdateItem: handleUpdateItem,
