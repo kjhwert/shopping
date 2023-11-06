@@ -39,9 +39,9 @@ const Products = () => {
       <S.List>
         {products.map((product) => (
           <S.Product key={product.item_no}>
-            <S.ShoppingBagWrapper onClick={() => onCreateOrDeleteItem(product)}>
+            <S.ShoppingCart onClick={() => onCreateOrDeleteItem(product)}>
               <IconShoppingCart isActive={isItemInCart(product.item_no)} />
-            </S.ShoppingBagWrapper>
+            </S.ShoppingCart>
             <S.Image src={product.detail_image_url} alt="상품 이미지" />
             <S.Info>
               <S.Name>{product.item_name}</S.Name>

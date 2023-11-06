@@ -66,7 +66,7 @@ export const PaginationWrapper = styled.div`
   justify-content: center;
 `;
 
-export const ShoppingBagWrapper = styled.div`
+export const ShoppingCart = styled.div`
   position: absolute;
   top: 10px;
   right: 10px;
