@@ -42,7 +42,9 @@ const useCart = () => {
       .filter((cart) => cart.checked)
       .reduce((prev, next) => prev + next.discountPrice * next.count, 0);
 
-    return Math.floor(discountPricesByRate - discountAmount);
+    const discountPriceByAmount = discountPricesByRate - discountAmount;
+
+    return discountPriceByAmount < 0 ? 0 : Math.floor(discountPriceByAmount);
   };
 
   const handleUpdateItem = (item_no: number, fields: Partial<CartItem>) => {
