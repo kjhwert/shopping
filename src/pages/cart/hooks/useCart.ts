@@ -18,6 +18,13 @@ const useCart = () => {
   } = useCartStore((state) => state);
 
   const memoizedCartItems: MemoizedCartItem[] = carts.map((cartItem) => {
+    if (cartItem.availableCoupon === false) {
+      return {
+        ...cartItem,
+        discountPrice: cartItem.price,
+      };
+    }
+
     const discountPrice = cartItem.checked
       ? cartItem.price * ((100 - discountRate) / 100)
       : cartItem.price;
