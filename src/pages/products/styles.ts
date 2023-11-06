@@ -30,6 +30,7 @@ export const Product = styled.li`
 
 export const Image = styled.img`
   max-width: 100%;
+  aspect-ratio: 1 / 1;
 `;
 
 export const Info = styled.section`
