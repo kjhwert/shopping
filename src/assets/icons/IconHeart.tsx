@@ -1,9 +1,9 @@
-interface IconScoreProps {
+interface IconHeartProps {
   width?: number;
   height?: number;
 }
 
-const IconScore = ({ width = 18, height = 18 }: IconScoreProps) => {
+const IconHeart = ({ width = 18, height = 18 }: IconHeartProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -16,4 +16,4 @@ const IconScore = ({ width = 18, height = 18 }: IconScoreProps) => {
   );
 };
 
-export default IconScore;
+export default IconHeart;
