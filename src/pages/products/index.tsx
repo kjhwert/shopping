@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { getProductsQuery } from "../../apis/products/queries";
 import * as S from "./styles";
-import IconScore from "../../assets/icons/IconScore";
 import Pagination from "../../components/Pagination";
-import { useState } from "react";
-import useCart from "./hooks/useCart";
-import IconShoppingCart from "../../assets/icons/IconShoppingCart";
+import { useMemo, useState } from "react";
+import ProductCard from "../../components/ProductCard";
+import useCartStore from "../../stores/cart/useCartStore";
+import { Product } from "../../apis/products/types";
 
 const Products = () => {
-  const { isItemInCart, onCreateOrDeleteItem } = useCart();
+  const { carts, onRemoveItem, onAddItem } = useCartStore((state) => state);
 
   const [page, setPage] = useState(1);
 
@@ -24,6 +24,38 @@ const Products = () => {
     suspense: true,
   });
 
+  const isCartFull = useMemo(() => carts.length >= 3, [carts]);
+
+  const isItemInCart = (item_no: number) => {
+    return carts.some((cart) => cart.item_no === item_no);
+  };
+
+  const handleAddItem = (item_no: Product["item_no"]) => {
+    if (isCartFull) {
+      alert("장바구니는 최대 3개까지 담을 수 있습니다.");
+      return;
+    }
+
+    const product = data?.products.find((cart) => cart.item_no === item_no);
+    if (product) {
+      onAddItem(product);
+    }
+  };
+
+  const handleRemoveItem = (index: number) => {
+    onRemoveItem(index);
+  };
+
+  const handleCreateOrDeleteItem = (item_no: Product["item_no"]) => {
+    const cartItem = carts.find((cart) => cart.item_no === item_no);
+
+    if (cartItem) {
+      handleRemoveItem(item_no);
+    } else {
+      handleAddItem(item_no);
+    }
+  };
+
   const handlePageChange = (page: number) => {
     setPage(page);
   };
@@ -38,20 +70,12 @@ const Products = () => {
     <S.Layout>
       <S.List>
         {products.map((product) => (
-          <S.Product key={product.item_no}>
-            <S.ShoppingCart onClick={() => onCreateOrDeleteItem(product)}>
-              <IconShoppingCart isActive={isItemInCart(product.item_no)} />
-            </S.ShoppingCart>
-            <S.Image src={product.detail_image_url} alt="상품 이미지" />
-            <S.Info>
-              <S.Name>{product.item_name}</S.Name>
-              <S.Price>{product.price.toLocaleString()}</S.Price>
-              <S.ScoreWrapper>
-                <IconScore />
-                <S.Score>{product.score}</S.Score>
-              </S.ScoreWrapper>
-            </S.Info>
-          </S.Product>
+          <ProductCard
+            key={`product-card-${product.item_no}`}
+            product={product}
+            onCartClick={handleCreateOrDeleteItem}
+            isAddedToCart={isItemInCart(product.item_no)}
+          />
         ))}
       </S.List>
       <S.PaginationWrapper>
