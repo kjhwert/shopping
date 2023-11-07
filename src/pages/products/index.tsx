@@ -43,15 +43,11 @@ const Products = () => {
     }
   };
 
-  const handleRemoveItem = (item_no: Product["item_no"]) => {
-    onRemoveItem(item_no);
-  };
-
-  const handleCreateOrDeleteItem = (item_no: Product["item_no"]) => {
+  const handleAddOrRemove = (item_no: Product["item_no"]) => {
     const cartItem = carts.find((cart) => cart.item_no === item_no);
 
     if (cartItem) {
-      handleRemoveItem(item_no);
+      onRemoveItem(item_no);
     } else {
       handleAddItem(item_no);
     }
@@ -69,7 +65,7 @@ const Products = () => {
             <ProductCard
               key={`product-card-${product.item_no}`}
               product={product}
-              onCartClick={handleCreateOrDeleteItem}
+              onCartClick={handleAddOrRemove}
               isAddedToCart={isItemInCart(product.item_no)}
             />
           ))}
