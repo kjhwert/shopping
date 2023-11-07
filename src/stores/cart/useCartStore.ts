@@ -30,6 +30,10 @@ const useCartStore = create(
     discountAmount: 0,
     onAddItem: (product) => {
       set((state) => {
+        if (state.carts.length >= 3) {
+          throw new Error("장바구니는 3개까지만 담을 수 있습니다.");
+        }
+
         state.carts.push({
           ...product,
           count: 1,

@@ -29,14 +29,17 @@ const Products = () => {
   };
 
   const handleAddItem = (item_no: Product["item_no"]) => {
-    if (carts.length >= 3) {
-      alert("장바구니는 최대 3개까지 담을 수 있습니다.");
+    const product = res?.products.find((cart) => cart.item_no === item_no);
+    if (!product) {
       return;
     }
 
-    const product = res?.products.find((cart) => cart.item_no === item_no);
-    if (product) {
+    try {
       onAddItem(product);
+    } catch (e) {
+      if (e instanceof Error) {
+        window.alert(e.message);
+      }
     }
   };
 
