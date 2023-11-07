@@ -13,6 +13,7 @@ type State = {
 };
 
 type Action = {
+  hasItem: (item_no: number) => boolean;
   onAddItem: (product: Product) => void;
   onRemoveItem: (item_no: number) => void;
   onUpdateItem: (item_no: number, fields: Partial<CartItem>) => void;
@@ -23,10 +24,13 @@ type Action = {
 };
 
 const useCartStore = create(
-  immer<State & Action>((set) => ({
+  immer<State & Action>((set, get) => ({
     carts: [],
     discountRate: 0,
     discountAmount: 0,
+    hasItem: (item_no) => {
+      return get().carts.some((cartItem) => cartItem.item_no === item_no);
+    },
     onAddItem: (product) => {
       set((state) => {
         if (state.carts.length >= 3) {

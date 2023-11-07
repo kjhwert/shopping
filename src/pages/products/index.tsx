@@ -8,7 +8,9 @@ import { Product } from "../../apis/products/types";
 import useCartStore from "../../stores/cart";
 
 const Products = () => {
-  const { carts, onRemoveItem, onAddItem } = useCartStore((state) => state);
+  const { carts, hasItem, onRemoveItem, onAddItem } = useCartStore(
+    (state) => state,
+  );
 
   const [page, setPage] = useState(1);
 
@@ -23,10 +25,6 @@ const Products = () => {
     }),
     suspense: true,
   });
-
-  const isItemInCart = (item_no: number) => {
-    return carts.some((cart) => cart.item_no === item_no);
-  };
 
   const handleAddItem = (item_no: Product["item_no"]) => {
     const product = res?.products.find((cart) => cart.item_no === item_no);
@@ -66,7 +64,7 @@ const Products = () => {
               key={`product-card-${product.item_no}`}
               product={product}
               onCartClick={handleAddOrRemove}
-              isAddedToCart={isItemInCart(product.item_no)}
+              isAddedToCart={hasItem(product.item_no)}
             />
           ))}
         </S.List>
