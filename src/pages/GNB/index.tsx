@@ -25,9 +25,7 @@ const GNB = () => {
           </S.NavLink>
         </S.NavList>
       </S.NavigationBar>
-      <React.Suspense fallback={<div>Loading...</div>}>
-        <Outlet />
-      </React.Suspense>
+      <Outlet />
     </>
   );
 };
