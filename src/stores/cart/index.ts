@@ -1,11 +1,10 @@
+import { CartItem } from "./types";
+
 import { create } from "zustand";
 import { Product } from "../../apis/products/types";
 import { immer } from "zustand/middleware/immer";
 
-export interface CartItem extends Product {
-  count: number;
-  checked: boolean;
-}
+export type { CartItem } from "./types";
 
 type State = {
   carts: CartItem[];

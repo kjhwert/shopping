@@ -4,8 +4,8 @@ import * as S from "./styles";
 import Pagination from "../../components/Pagination";
 import React, { useState } from "react";
 import ProductCard from "../../components/ProductCard";
-import useCartStore from "../../stores/cart/useCartStore";
 import { Product } from "../../apis/products/types";
+import useCartStore from "../../stores/cart";
 
 const Products = () => {
   const { carts, onRemoveItem, onAddItem } = useCartStore((state) => state);

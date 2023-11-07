@@ -1,4 +1,4 @@
-import useCartStore, { CartItem } from "../../../stores/cart/useCartStore";
+import useCartStore, { CartItem } from "../../../stores/cart";
 
 export interface MemoizedCartItem extends CartItem {
   discountPrice: number;
