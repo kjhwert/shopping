@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getProductsQuery } from "../../apis/products/queries";
 import * as S from "./styles";
 import Pagination from "../../components/Pagination";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import ProductCard from "../../components/ProductCard";
 import useCartStore from "../../stores/cart/useCartStore";
 import { Product } from "../../apis/products/types";
@@ -24,14 +24,12 @@ const Products = () => {
     suspense: true,
   });
 
-  const isCartFull = useMemo(() => carts.length >= 3, [carts]);
-
   const isItemInCart = (item_no: number) => {
     return carts.some((cart) => cart.item_no === item_no);
   };
 
   const handleAddItem = (item_no: Product["item_no"]) => {
-    if (isCartFull) {
+    if (carts.length >= 3) {
       alert("장바구니는 최대 3개까지 담을 수 있습니다.");
       return;
     }
@@ -42,8 +40,8 @@ const Products = () => {
     }
   };
 
-  const handleRemoveItem = (index: number) => {
-    onRemoveItem(index);
+  const handleRemoveItem = (item_no: Product["item_no"]) => {
+    onRemoveItem(item_no);
   };
 
   const handleCreateOrDeleteItem = (item_no: Product["item_no"]) => {
