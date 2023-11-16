@@ -1,5 +1,16 @@
-import { AvailableProductSortField, Product } from "./types";
-import mockProducts from "./productsAPI.mock";
+import apiFetch from "../apiFetch";
+import productItems from "../../mocks/products/products.mock";
+
+export interface Product {
+  item_no: number;
+  item_name: string;
+  detail_image_url: string;
+  price: number;
+  score: number;
+  availableCoupon?: boolean;
+}
+
+export type AvailableProductSortField = Extract<keyof Product, "score">;
 
 interface GetProductsParams {
   page: number;
@@ -25,7 +36,7 @@ export const getProducts = (
 
   return new Promise((resolve) => {
     window.setTimeout(() => {
-      const sortedProducts = mockProducts.sort((prev, next) => {
+      const sortedProducts = productItems.sort((prev, next) => {
         if (sort.order === "desc") {
           return next[sort.field] - prev[sort.field];
         }

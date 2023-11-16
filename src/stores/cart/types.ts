@@ -1,6 +1,8 @@
-import { Product } from "../../apis/products/types";
+import { Product } from "../../apis/products";
 
-export interface CartItem extends Omit<Product, "score"> {
+export interface CartItem {
+  product: Product;
   count: number;
   checked: boolean;
+  discountPrice: number;
 }

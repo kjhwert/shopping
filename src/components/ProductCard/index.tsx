@@ -1,31 +1,26 @@
-import { Product } from "../../apis/products/types";
+import { Product } from "../../apis/products";
 import * as S from "./styles";
-import IconShoppingCart from "../../assets/icons/IconShoppingCart";
-import IconHeart from "../../assets/icons/IconHeart";
 
-interface ProductCardProps {
+interface Props {
   product: Product;
-  onCartClick: (item_no: Product["item_no"]) => void;
+  onAddOrRemoveItem(item_no: number): void;
   isAddedToCart: boolean;
 }
 
-const ProductCard = (props: ProductCardProps) => {
-  const { product, onCartClick, isAddedToCart } = props;
-
+const ProductCard = ({ product, onAddOrRemoveItem, isAddedToCart }: Props) => {
   return (
     <S.Item>
-      <S.ShoppingCart onClick={() => onCartClick(product.item_no)}>
-        <IconShoppingCart isActive={isAddedToCart} />
-      </S.ShoppingCart>
-      <S.Image src={product.detail_image_url} alt="상품 이미지" />
-      <S.Info>
-        <S.Name>{product.item_name}</S.Name>
-        <S.Price>{product.price.toLocaleString()}</S.Price>
-        <S.Heart>
-          <IconHeart />
-          <S.HeartText>{product.score}</S.HeartText>
-        </S.Heart>
-      </S.Info>
+      <S.ImageInfo>
+        <S.Image src={product.detail_image_url} alt="상품 이미지" />
+        <S.CartButton onClick={() => onAddOrRemoveItem(product.item_no)}>
+          {isAddedToCart ? "빼기" : "담기"}
+        </S.CartButton>
+      </S.ImageInfo>
+      <S.ItemName>{product.item_name}</S.ItemName>
+      <S.ItemInfo>
+        <span>{product.price.toLocaleString()}원</span>
+        <span>score: {product.score}</span>
+      </S.ItemInfo>
     </S.Item>
   );
 };

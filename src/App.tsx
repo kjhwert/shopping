@@ -1,14 +1,23 @@
-import { QueryClientProvider } from "@tanstack/react-query";
+import React from "react";
 import { RouterProvider } from "react-router-dom";
-import appRouter from "./pages";
-import queryClient from "./configs/queryClient";
+import appRouter from "./pages/router";
+import { queryClient, QueryClientProvider } from "./configs/reactQuery";
+import worker from "./mocks/worker";
+import { ThemeProvider } from "@emotion/react";
+import theme from "./themes/theme";
 
-const App = () => {
+if (process.env.NODE_ENV === "development") {
+  worker.start();
+}
+
+function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={appRouter} />
+      <ThemeProvider theme={theme}>
+        <RouterProvider router={appRouter} />
+      </ThemeProvider>
     </QueryClientProvider>
   );
-};
+}
 
 export default App;
